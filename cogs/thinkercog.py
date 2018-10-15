@@ -5,6 +5,7 @@ import random
 from random import randrange
 import requests
 import nltk
+from bs4 import BeautifulSoup
 
 
 class ThinkerCog:
@@ -65,15 +66,18 @@ class ThinkerCog:
 
     @commands.command(name = "xkcd")
     async def fetch_xkcd(self, ctx, number: int = 0):
-        embed = discord.Embed(title = "Command: XKCD")
+        embed = discord.Embed(title = "Command: XKCD", color = 0x0000FF)
         if number == 0:
-            comic_source = requests.get('https://c.xkcd.com/random/comic/')
+            soup = BeautifulSoup(requests.get('https://c.xkcd.com/random/comic/'), 'html.parser')
         else:
-            comic_source = requests.get('https://xkcd.com/')
-            comic_spot = comic_source.find('Permanent link to this comic: https://xkcd.com/')
-            comic_spot_end = comic_source[comic_spot:].find('/') + comic_spot
-            if number <= int(comic_source[comic_spot:comic_spot_end]) :
-                comic_source = requests.get(f'https://xkcd.com/{number}/')
+            if requests.get(f'https://xkcd.com/{number}/').status_code != 404:
+                soup = BeautifulSoup(requests.get(f'https://xkcd.com/{number}/'), 'html.parser')
+            else:
+                soup = BeautifulSoup(requests.get('https://xkcd.com/'), 'html.parser')
+                embed.set_footer(text = "The requested comic is unavailable. Have this one instead.")
+        embed.set_image(url = soup.find('p', id = "comic").img.src)
+        embed.description = str(soup.find('p', id = "comic").img.title)
+        ctx.send(embed = embed)
 
 
 def setup(bot):
