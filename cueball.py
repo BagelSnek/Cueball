@@ -2,10 +2,6 @@ import os
 import platform
 import time
 import json
-import config
-import sys
-import pyforms
-
 import discord
 import requests
 from discord.ext.commands import Bot
@@ -153,7 +149,7 @@ async def urban(ctx, *msg):
         await ctx.send(embed = embed)
 
     except:
-        await ctx.send(config.err_mesg)
+        await ctx.send("It done messed up.")
 
 
 @bot.command()
@@ -186,23 +182,10 @@ async def about(ctx):
     await ctx.send(embed = embed)
 
 
-# @bot.event
-# async def cmd_send(ctx, err: Exception = None, caller = sys._getframe().f_back.f_code.co_name, show_input = False):
-#     embed = discord.Embed(name = f"Command: {caller}")
-#     if err is not None:
-#         embed.color = 0xff0000
-#         embed.description = f"An error has occurred\n{type(err).__name__}: {err}"
-#     else:
-#         pass
-#     if show_input:
-#         embed.set_footer(text = ctx.message)
-#     ctx.send(embed = embed)
-
-
-# @bot.command(aliases = ['gh', 'code'])
-# async def github(ctx):
-#     """Gives you a link to the GitHub website."""
-#     await ctx.send("**GitHub:** https://icrazyblaze.github.io/BlazeBot/")
+@bot.command(aliases = ['gh', 'code'])
+async def github(ctx):
+    """Gives you a link to the GitHub website."""
+    await ctx.send("**GitHub:** https://github.com/BagelSnek/Cueball")
 
 
 if __name__ == "__main__":

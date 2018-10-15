@@ -19,13 +19,7 @@ class ThinkerCog:
 
     @commands.command()
     async def apod(self, ctx, focus: str = date.today().strftime("%y%m%d")):
-        """
-        Sends a photo from NASA's APotD.
-
-        Usage:
-            apod <date>
-            apod random
-        """
+        """Sends a photo from NASA's APotD."""
         embed = discord.Embed(title = "Command: apod", color = 0x0000FF)
         if focus.lower() == "random":
             day = self.random_date(date(1995, 6, 1), date.today()).strftime("%y%m%d")
