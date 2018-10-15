@@ -67,9 +67,13 @@ class ThinkerCog:
     async def fetch_xkcd(self, ctx, number: int = 0):
         embed = discord.Embed(title = "Command: XKCD")
         if number == 0:
-            comic_source = requests.get("https://c.xkcd.com/random/comic/")
+            comic_source = requests.get('https://c.xkcd.com/random/comic/')
         else:
-
+            comic_source = requests.get('https://xkcd.com/')
+            comic_spot = comic_source.find('Permanent link to this comic: https://xkcd.com/')
+            comic_spot_end = comic_source[comic_spot:].find('/') + comic_spot
+            if number <= int(comic_source[comic_spot:comic_spot_end]) :
+                comic_source = requests.get(f'https://xkcd.com/{number}/')
 
 
 def setup(bot):

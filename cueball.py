@@ -180,7 +180,7 @@ async def unload(ctx, extension_name: str):
 async def about(ctx):
     embed = discord.Embed(title = "Command: about", color = 0x0000FF)
     embed.add_field(name = "Name", value = bot.name)
-    embed.add_field(name = "Built by", value = "Xaereus")
+    embed.add_field(name = "Built by", value = "Machoo and Xaereus")
     embed.add_field(name = "Running on", value = str(platform.platform()))
     embed.add_field(name = "Extensions", value = '\n'.join(f"**[{x[4:]}**" for x in bot_settings['initial_extensions']))
     await ctx.send(embed = embed)
