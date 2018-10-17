@@ -6,6 +6,7 @@ from random import randrange
 import requests
 import nltk
 from bs4 import BeautifulSoup
+import re
 
 
 class ThinkerCog:
@@ -18,15 +19,15 @@ class ThinkerCog:
         return start + timedelta(days = randrange((end - start).days))
 
     @commands.command()
-    async def apod(self, ctx, focus: str = date.today().strftime("%y%m%d")):
+    async def apod(self, ctx, focus: str = date.today().strftime("%y/%m/%d")):
         """Sends a photo from NASA's APotD."""
         embed = discord.Embed(title = "Command: apod", color = 0x0000FF)
         if focus.lower() == "random":
-            day = self.random_date(date(1995, 6, 1), date.today()).strftime("%y%m%d")
+            day = self.random_date(date(1995, 6, 1), date.today()).strftime("%y%m%d").strip
         else:
-            day = focus.strip("/")
+            day = focus
 
-        pic_source = requests.get(f'https://apod.nasa.gov/apod/ap{day}.html').text  # Gets source code for the apod site
+        pic_source = requests.get(f"https://apod.nasa.gov/apod/ap{day.strip('/')}.html").text
 
         if '<IMG SRC=' in pic_source:
             image_spot = pic_source.find('<IMG SRC=') + 10  # Finds image location
@@ -62,16 +63,18 @@ class ThinkerCog:
     async def fetch_xkcd(self, ctx, number: int = 0):
         embed = discord.Embed(title = "Command: XKCD", color = 0x0000FF)
         if number == 0:
-            soup = BeautifulSoup(requests.get('https://c.xkcd.com/random/comic/'), 'html.parser')
+            soup = BeautifulSoup(requests.get('https://c.xkcd.com/random/comic/').text, 'html.parser')
         else:
             if requests.get(f'https://xkcd.com/{number}/').status_code != 404:
-                soup = BeautifulSoup(requests.get(f'https://xkcd.com/{number}/'), 'html.parser')
+                soup = BeautifulSoup(requests.get(f'https://xkcd.com/{number}/').text, 'html.parser')
             else:
-                soup = BeautifulSoup(requests.get('https://xkcd.com/'), 'html.parser')
+                soup = BeautifulSoup(requests.get('https://xkcd.com/').text, 'html.parser')
                 embed.set_footer(text = "The requested comic is unavailable. Have this one instead.")
-        embed.set_image(url = soup.find('p', id = "comic").img.src)
-        embed.description = str(soup.find('p', id = "comic").img.title)
-        ctx.send(embed = embed)
+        embed.set_image(url = f"https:{soup.find('div', id = 'comic').img['src']}")
+        embed.description = f"**{soup.find(text = re.compile('Permanent link to this comic:'))[48:-1]} "\
+                            f": {soup.find('div', id = 'comic').img['alt']}**"
+        embed.set_footer(text = f"{soup.find('div', id = 'comic').img['title']}")
+        await ctx.send(embed = embed)
 
 
 def setup(bot):

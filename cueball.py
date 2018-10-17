@@ -12,11 +12,13 @@ try:
         # Creates file with default settings
         bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": []}
         json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
+    else:
+        with open('botSettings.json') as botSettings:
+            bot_settings = json.load(botSettings)
+        botSettings.close()
+        print("Settings successfully loaded.")
 except:
-    with open('botSettings.json') as botSettings:
-        bot_settings = json.load(botSettings)
-    botSettings.close()
-    print("Settings successfully loaded.")
+    print("Error when loading settings.")
 
 bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['prefix'],
           activity = discord.Game(name = bot_settings['currActivity']),
@@ -28,7 +30,7 @@ bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['pr
 async def on_ready():
     """Where we droppin', boys?"""
     print(f"{time.ctime()} :: Booted as {bot.user.name} (ID - {bot.user.id})\n")
-    print("Connected guilds: acc")
+    print("Connected guilds:")
     for guild in bot.guilds:
         print(f"\tID - {guild.id} : Name - {guild.name}")
     print(f"Discord.py API version: {discord.__version__}")
@@ -41,7 +43,7 @@ async def on_ready():
 async def purge(ctx, number: int):
     """Bulk-deletes messages from the channel."""
     if ctx.message.author.guild_permissions.administrator:
-        return await bot.delete_messages([x for x in bot.logs_from(ctx.message.channel, limit = number)])
+        return await ctx.delete_messages([x for x in ctx.logs_from(ctx.message.channel, limit = number)])
     await ctx.send(embed = discord.Embed(title = "Command: purge", color = 0xFF0000,
                                          description = "Ya done messed up, bother Xaereus about it."))
 
@@ -71,7 +73,7 @@ async def hug(ctx, *, member: discord.Member = None):
 async def echo(ctx, *msg):
     """Makes the bot talk."""
     try:
-        await bot.delete_message(ctx.message)
+        await ctx.delete_message(ctx.message)
         await ctx.send(' '.join(msg))
     except:
         await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
@@ -102,7 +104,7 @@ async def get_bans(ctx):
     """Lists all banned users on the current guild."""
     await ctx.send(embed = discord.Embed(title = "Command: getBans", color = 0x00FF00,
                                          description =
-                                         '\n'.join([y.name for y in await bot.get_bans(ctx.message.guild)])))
+                                         '\n'.join([y.name for y in await ctx.get_bans(ctx.message.guild)])))
 
 
 @bot.command(aliases = ['user'])
@@ -127,7 +129,7 @@ async def ping(ctx):
         pingtime = time.time()
         embed.description = "*Pinging...*"
         net_ping = (time.time() - pingtime) * 1000
-        await bot.edit_message(embed.description, f"**Pong!** Ping is `{net_ping:d}ms`")
+        await ctx.edit_message(embed.description, f"**Pong!** Ping is `{net_ping:d}ms`")
     except:
         await ctx.send("How did you mess up the ping command? Just tell Xaereus.")
 
@@ -156,13 +158,12 @@ async def urban(ctx, *msg):
 async def load_initial(ctx):
     """Loads startup extensions."""
     if __name__ == "__main__":
-        for extension in bot_settings['initial_extensions']:
+        for extension_name in bot_settings['initial_extensions']:
             try:
-                bot.load_extension(extension)
-                await ctx.send(f"Loaded extension: '{extension}'")
+                bot.load_extension(extension_name)
+                await ctx.send(f"Loaded extension: '{extension_name}'")
             except Exception as e:
-                exc = f'{type(e).__name__}: {e}'
-                print(f'Failed to load extension {extension}\n{exc}')
+                print(f'Failed to load extension {extension_name}\n{type(e).__name__}: {e}')
 
 
 @bot.command()
@@ -175,10 +176,10 @@ async def unload(ctx, extension_name: str):
 @bot.command()
 async def about(ctx):
     embed = discord.Embed(title = "Command: about", color = 0x0000FF)
-    embed.add_field(name = "Name", value = bot.name)
+    embed.add_field(name = "Name", value = bot.user.name)
     embed.add_field(name = "Built by", value = "Machoo and Xaereus")
     embed.add_field(name = "Running on", value = str(platform.platform()))
-    embed.add_field(name = "Extensions", value = '\n'.join(f"**[{x[4:]}**" for x in bot_settings['initial_extensions']))
+    embed.add_field(name = "Extensions", value = '\n'.join(f"**{x[5:]}**" for x in bot_settings['initial_extensions']))
     await ctx.send(embed = embed)
 
 
