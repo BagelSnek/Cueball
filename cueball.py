@@ -25,6 +25,12 @@ bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['pr
           case_insensitive = True)
 
 
+def update_botsettings(key, value):
+    bot_settings[key] = value
+    json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
+    return value
+
+
 # Start bot and print status to console
 @bot.event
 async def on_ready():
@@ -83,7 +89,8 @@ async def echo(ctx, *msg):
 async def change_game(ctx, *activity):
     """Changes what the bot is playing."""
     if ctx.message.author.guild_permissions.administrator:
-        await bot.change_presence(activity = discord.Game(name = ' '.join(activity)))
+        await bot.change_presence(activity =
+                                  discord.Game(name = update_botsettings('currActivity', ' '.join(activity))))
         await ctx.send(embed = discord.Embed(title = "Command: changeGame", color = 0x0000FF,
                                              description = f"Game was changed to {' '.join(activity)}"))
     else:

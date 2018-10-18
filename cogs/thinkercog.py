@@ -19,15 +19,15 @@ class ThinkerCog:
         return start + timedelta(days = randrange((end - start).days))
 
     @commands.command()
-    async def apod(self, ctx, focus: str = date.today().strftime("%y/%m/%d")):
+    async def apod(self, ctx, focus: str = date.today().strftime("%y%m%d")):
         """Sends a photo from NASA's APotD."""
         embed = discord.Embed(title = "Command: apod", color = 0x0000FF)
         if focus.lower() == "random":
-            day = self.random_date(date(1995, 6, 1), date.today()).strftime("%y%m%d").strip
+            day = self.random_date(date(1995, 6, 1), date.today()).strftime("%y%m%d")
         else:
-            day = focus
+            day = focus.strip('/')
 
-        pic_source = requests.get(f"https://apod.nasa.gov/apod/ap{day.strip('/')}.html").text
+        pic_source = requests.get(f"https://apod.nasa.gov/apod/ap{day}.html").text
 
         if '<IMG SRC=' in pic_source:
             image_spot = pic_source.find('<IMG SRC=') + 10  # Finds image location
@@ -47,17 +47,20 @@ class ThinkerCog:
 
     @commands.command()
     async def answer(self, ctx):
-        embed = discord.Embed(title = "Command: answer", color = 0x0000FF, description = ctx.message.content)
-        questions = ctx.message.content.split(' or ')
+        embed = discord.Embed(title = "Command: answer", color = 0x0000FF,
+                              description =
+                              ctx.message.content.strip(f'{self.bot.command_prefix}answer'))
+        questions = ctx.message.content.strip('?').strip(f'{self.bot.command_prefix}answer').split(' or ')
         for chunk in questions:
             for word, tag in nltk.pos_tag(nltk.tokenize.word_tokenize(chunk), tagset = 'universal'):
-                if tag == 'PRON' or word == 'should' or word == '?':
-                    chunk.remove(word)
+                if tag == 'PRON' or word == 'should':
+                    chunk.replace(word, '')
         if len(questions) == 1:
-            embed.set_footer(text = random.choice(["yes", "yas", "yep", "yup", "no", "nop", "nope", "noperino"]))
+            embed.set_footer(text =
+                             random.choice(["yes", "yas", "yep", "yup", "no", "nop", "nope", "noperino"]).capitalize())
         else:
-            embed.set_footer(text = random.choice(questions))
-        ctx.send(embed = embed)
+            embed.set_footer(text = random.choice(questions).capitalize())
+        await ctx.send(embed = embed)
 
     @commands.command(name = "xkcd")
     async def fetch_xkcd(self, ctx, number: int = 0):
