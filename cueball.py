@@ -7,18 +7,15 @@ import requests
 from discord.ext.commands import Bot
 
 # Load bot settings
-try:
-    if not os.path.isfile('botSettings.json'):
-        # Creates file with default settings
-        bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": []}
-        json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
-    else:
-        with open('botSettings.json') as botSettings:
-            bot_settings = json.load(botSettings)
-        botSettings.close()
-        print("Settings successfully loaded.")
-except:
-    print("Error when loading settings.")
+if not os.path.isfile('botSettings.json'):
+    # Creates file with default settings
+    bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": []}
+    json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
+else:
+    with open('botSettings.json') as botSettings:
+        bot_settings = json.load(botSettings)
+    botSettings.close()
+    print("Settings successfully loaded.")
 
 bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['prefix'],
           activity = discord.Game(name = bot_settings['currActivity']),
