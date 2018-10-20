@@ -2,3 +2,4 @@ discord-rewrite
 bs4
 nltk
 requests
+yarl<1.2

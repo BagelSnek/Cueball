@@ -203,4 +203,7 @@ if __name__ == "__main__":
         except (AttributeError, ImportError) as e:
             print(f'Failed to load_initial extension {extension}\n{type(e).__name__}: {e}')
 
-    bot.run(open('token.txt', 'r').read(), bot = True, reconnect = True)
+    try:
+        bot.run(open('token.txt', 'r').read(), bot = True, reconnect = True)
+    except (discord.HTTPException, discord.LoginFailure) as e:
+        bot.loop.run_until_complete(bot.logout())
