@@ -193,7 +193,8 @@ async def about(ctx):
     embed.add_field(name = "Name", value = bot.user.name)
     embed.add_field(name = "Built by", value = "Machoo and Xaereus")
     embed.add_field(name = "Running on", value = str(platform.platform()))
-    embed.add_field(name = "Extensions", value = '\n'.join(f"**{x[5:]}**" for x in bot_settings['initial_extensions']))
+    if len(bot_settings['initial_extensions']) > 0:
+        embed.add_field(name = "Extensions", value = '\n'.join(f"**{x[5:]}**" for x in bot_settings['initial_extensions']))
     await ctx.send(embed = embed)
 
 
