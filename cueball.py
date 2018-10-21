@@ -6,7 +6,6 @@ import time
 import json
 import discord
 import requests
-import logging
 from discord.ext.commands import Bot
 
 # Load bot settings
@@ -29,13 +28,6 @@ def update_botsettings(key, value):
     bot_settings[key] = value
     json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
     return value
-
-
-debugLogger = logging.getLogger('discord')
-debugLogger.setLevel(logging.DEBUG)
-debugHandler = logging.FileHandler(filename = 'logs/cueball_debug.log', encoding = 'utf-8', mode = 'w')
-debugHandler.setFormatter(logging.Formatter('%(asctime)s :: %(levelname)s ::\t%(name)s:  %(message)s'))
-debugLogger.addHandler(debugHandler)
 
 
 # Start bot and print status to console
