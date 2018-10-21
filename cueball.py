@@ -202,6 +202,7 @@ if __name__ == "__main__":
             print(f"Loaded extension '{extension}'")
         except (AttributeError, ImportError) as e:
             print(f'Failed to load_initial extension {extension}\n{type(e).__name__}: {e}')
-    with open(os.path.join(os.getcwd(), 'token.txt'), 'r').readline() as token:
+    with open('token.txt') as token:
+        token = token.read()
         print(token)
         bot.run(token)
