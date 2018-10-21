@@ -210,6 +210,7 @@ if __name__ == "__main__":
             print(f"Loaded extension '{extension}'")
         except (AttributeError, ImportError) as e:
             print(f'Failed to load_initial extension {extension}\n{type(e).__name__}: {e}')
-    with open('token.txt') as tokentxt:
-        token = tokentxt.read()
-        bot.run(token)
+    bot.run("NDc3ODAzODc4ODA1NjY3ODQw.Dq477Q.qf5gI2AQfatuoj8Vysu5mvhCXFE")
+    # with open('token.txt') as tokentxt:
+    #     token = tokentxt.read()
+    #     bot.run(token)
