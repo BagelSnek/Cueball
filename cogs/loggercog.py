@@ -1,10 +1,8 @@
-import logging
 import datetime
+import logging
 
-from discord.ext import commands
 
-
-class LogCog:
+class LoggerCog:
     """Logs everything."""
 
     def __init__(self, bot):
@@ -22,11 +20,10 @@ class LogCog:
         self.cmdHandler.setFormatter(logging.Formatter('%(asctime)s ::\t %(message)s'))
         self.cmdLogger.addHandler(self.cmdHandler)
 
-    @commands.command()
     async def on_command(self, ctx):
         self.cmdLogger.info(f"{datetime.datetime.now()} :: {ctx.command}")
         print(f"{datetime.datetime.now()} :: {ctx.command}")
 
 
 def setup(bot):
-    bot.add_cog(LogCog(bot))
+    bot.add_cog(LoggerCog(bot))

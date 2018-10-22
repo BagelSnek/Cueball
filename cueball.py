@@ -1,4 +1,4 @@
-#! /usr/bin/env
+#! /usr/bin/env python3.6
 
 import os
 import platform
@@ -23,6 +23,8 @@ bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['pr
           activity = discord.Game(name = bot_settings['currActivity']),
           case_insensitive = True, )
 
+bot.remove_command('help')
+
 
 def update_botsettings(key, value):
     bot_settings[key] = value
@@ -45,10 +47,10 @@ async def on_ready():
 
 # Default Cueball commands
 @bot.command(aliases = ['remove', 'delete'])
-async def purge(ctx, number: int):
+async def purge(ctx, amount: int):
     """Bulk-deletes messages from the channel."""
     if ctx.message.author.guild_permissions.administrator:
-        return await ctx.delete_messages([x for x in ctx.logs_from(ctx.message.channel, limit = number)])
+        return await ctx.delete_messages([x for x in ctx.logs_from(ctx.message.channel, limit = amount)])
     await ctx.send(embed = discord.Embed(title = "Command: purge", color = 0xFF0000,
                                          description = "Ya done messed up, bother Xaereus about it."))
 
@@ -60,26 +62,12 @@ async def list_roles(ctx):
                                          value = '\n'.join([role.name for role in ctx.message.guild.roles])))
 
 
-@bot.command()
-async def hug(ctx, *, member: discord.Member = None):
-    """Hug someone on the server <3"""
-    embed = discord.Embed(title = "Command: hug", color = 0xFFC0CB)
-    if member is None:
-        embed.description = f"{ctx.message.author.mention} has been hugged!"
-    else:
-        if member.id == ctx.message.author.id:
-            embed.description = f"{ctx.message.author.mention} has hugged themself!"
-        else:
-            embed.description = f"{member.mention} has been hugged by {ctx.message.author.mention}!"
-    await ctx.send(embed = embed)
-
-
 @bot.command(aliases = ['say'])
-async def echo(ctx, *msg):
+async def echo(ctx, *say):
     """Makes the bot talk."""
     try:
         await ctx.delete_message(ctx.message)
-        await ctx.send(' '.join(msg))
+        await ctx.send(' '.join(say))
     except:
         await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
 
@@ -134,30 +122,11 @@ async def ping(ctx):
     try:
         pingtime = time.time()
         embed.description = "*Pinging...*"
+        await ctx.send(embed = embed)
         net_ping = (time.time() - pingtime) * 1000
         await ctx.edit_message(embed.description, f"**Pong!** Ping is `{net_ping:d}ms`")
     except:
         await ctx.send("How did you mess up the ping command? Just tell Xaereus.")
-
-
-@bot.command(aliases = ['ud'])
-async def urban(ctx, *msg):
-    """Searches on the Urban Dictionary."""
-    try:
-        # Send request to the Urban Dictionary API and grab info
-        response = requests.get("http://api.urbandictionary.com/v0/define", params = [("term", ' '.join(msg))]).json()
-        embed = discord.Embed(description = "No results found!", color = 0xFF0000)
-        if len(response["list"]) == 0:
-            return await ctx.send(embed = embed)
-        # Add results to the embed
-        embed = discord.Embed(title = "Word", description = ' '.join(msg), color = embed.color)
-        embed.add_field(name = "Top definition:", value = response['list'][0]['definition'])
-        embed.add_field(name = "Examples:", value = response['list'][0]["example"])
-        embed.set_footer(text = f"Tags: {', '.join(response['tags'])}")
-        await ctx.send(embed = embed)
-
-    except:
-        await ctx.send("It done messed up.")
 
 
 @bot.command()
@@ -175,12 +144,16 @@ async def load_initial(ctx):
 @bot.command()
 async def unload(ctx, extension_name: str):
     """Unloads an extension."""
-    bot.unload_extension(extension_name)
-    await ctx.send(f"`{extension_name} unloaded.`")
+    if ctx.message.author.guild_permissions.administrator:
+        bot.unload_extension(extension_name)
+        await ctx.send(f"`{extension_name} unloaded.`")
+    else:
+        await ctx.send("Ha, you thought.")
 
 
 @bot.command()
 async def about(ctx):
+    """Displays basic information about the bot."""
     embed = discord.Embed(title = "Command: about", color = 0x0000FF)
     embed.add_field(name = "Name", value = bot.user.name)
     embed.add_field(name = "Built by", value = "Machoo and Xaereus")
@@ -203,7 +176,7 @@ if __name__ == "__main__":
             print(f"Loaded extension '{extension}'")
         except (AttributeError, ImportError) as e:
             print(f'Failed to load_initial extension {extension}\n{type(e).__name__}: {e}')
-    bot.run("NDc3ODAzODc4ODA1NjY3ODQw.Dq477Q.qf5gI2AQfatuoj8Vysu5mvhCXFE")
+    bot.run("NDc3ODAzODc4ODA1NjY3ODQw.Dq477Q.qf5gI2AQfatuoj8Vysu5mvhCXFE", reconnect = True)
     # with open('token.txt') as tokentxt:
     #     token = tokentxt.read()
     #     bot.run(token)

@@ -47,18 +47,19 @@ class ThinkerCog:
 
     @commands.command()
     async def answer(self, ctx):
+        """Answers a basic question."""
         embed = discord.Embed(title = "Command: answer", color = 0x0000FF,
                               description =
                               ctx.message.content.strip(f'{self.bot.command_prefix}answer'))
         questions = ctx.message.content.strip('?').strip(f'{self.bot.command_prefix}answer').split(' or ')
-        for chunk in questions:
-            for word, tag in nltk.pos_tag(nltk.tokenize.word_tokenize(chunk), tagset = 'universal'):
-                if tag == 'PRON' or word == 'should':
-                    chunk.replace(word, '')
         if len(questions) == 1:
             embed.set_footer(text =
                              random.choice(["yes", "yas", "yep", "yup", "no", "nop", "nope", "noperino"]).capitalize())
         else:
+            for chunk in questions:
+                for word, tag in nltk.pos_tag(nltk.tokenize.word_tokenize(chunk), tagset = 'universal'):
+                    if tag == 'PRON' or word == 'should':
+                        chunk.replace(word, '')
             embed.set_footer(text = random.choice(questions).capitalize())
         await ctx.send(embed = embed)
 
@@ -78,6 +79,26 @@ class ThinkerCog:
                             f": {soup.find('div', id = 'comic').img['alt']}**"
         embed.set_footer(text = f"{soup.find('div', id = 'comic').img['title']}")
         await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['ud'])
+    async def urban(self, ctx, *msg):
+        """Searches on the Urban Dictionary."""
+        try:
+            # Send request to the Urban Dictionary API and grab info
+            response = requests.get("http://api.urbandictionary.com/v0/define",
+                                    params = [("term", ' '.join(msg))]).json()
+            embed = discord.Embed(description = "No results found!", color = 0xFF0000)
+            if len(response["list"]) == 0:
+                return await ctx.send(embed = embed)
+            # Add results to the embed
+            embed = discord.Embed(title = "Word", description = ' '.join(msg), color = 0x0000FF)
+            embed.add_field(name = "Top definition:", value = response['list'][0]['definition'])
+            embed.add_field(name = "Examples:", value = response['list'][0]["example"])
+            embed.set_footer(text = f"Tags: {', '.join(response['tags'])}")
+            await ctx.send(embed = embed)
+
+        except:
+            await ctx.send("It done messed up.")
 
 
 def setup(bot):
