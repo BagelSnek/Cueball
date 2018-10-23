@@ -47,7 +47,7 @@ async def on_ready():
 async def purge(ctx, amount: int):
     """Bulk-deletes messages from the channel."""
     if ctx.message.author.guild_permissions.administrator:
-        return await ctx.delete_messages([x for x in ctx.logs_from(ctx.message.channel, limit = amount)])
+        return await ctx.channel.delete([x for x in ctx.logs_from(ctx.message.channel, limit = amount)])
     await ctx.send(embed = discord.Embed(title = "Command: purge", color = 0xFF0000,
                                          description = "Ya done messed up, bother Xaereus about it."))
 
@@ -56,14 +56,14 @@ async def purge(ctx, amount: int):
 async def list_roles(ctx):
     """Lists the current roles on the guild."""
     await ctx.send(embed = discord.Embed(title = "Command: listRoles", color = 0x0000FF,
-                                         value = '\n'.join([role.name for role in ctx.message.guild.roles])))
+                                         description = '\n'.join([role.name for role in ctx.message.guild.roles])))
 
 
 @bot.command(aliases = ['say'])
 async def echo(ctx, *say):
     """Makes the bot talk."""
     try:
-        await ctx.delete_message(ctx.message.channel.id, ctx.message.id)
+        await ctx.message.delete()
         await ctx.send(' '.join(say))
     except:
         await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
