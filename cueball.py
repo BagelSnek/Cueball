@@ -5,7 +5,6 @@ import platform
 import time
 import json
 import discord
-import requests
 from discord.ext.commands import Bot
 
 # Load bot settings
@@ -21,9 +20,7 @@ else:
 
 bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['prefix'],
           activity = discord.Game(name = bot_settings['currActivity']),
-          case_insensitive = True, )
-
-bot.remove_command('help')
+          case_insensitive = True)
 
 
 def update_botsettings(key, value):
@@ -66,7 +63,7 @@ async def list_roles(ctx):
 async def echo(ctx, *say):
     """Makes the bot talk."""
     try:
-        await ctx.delete_message(ctx.message)
+        await ctx.delete_message(ctx.message.channel.id, ctx.message.id)
         await ctx.send(' '.join(say))
     except:
         await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
@@ -137,8 +134,8 @@ async def load_initial(ctx):
             try:
                 bot.load_extension(extension_name)
                 await ctx.send(f"Loaded extension: '{extension_name}'")
-            except Exception as e:
-                print(f'Failed to load extension {extension_name}\n{type(e).__name__}: {e}')
+            except (discord.ClientException, ImportError) as exc:
+                print(f'Failed to load extension {extension_name}\n{type(exc).__name__}: {exc}')
 
 
 @bot.command()

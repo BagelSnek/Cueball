@@ -11,7 +11,7 @@ class SocialCog:
     async def hug(self, ctx, *, member: discord.Member = None):
         """Hug someone on the server <3"""
         embed = discord.Embed(title = "Command: hug", color = 0xFFC0CB)
-        if member is None:
+        if member is None and member.id != ctx.message.author.id:
             embed.description = f"{ctx.message.author.mention} has been hugged!"
         else:
             if member.id == ctx.message.author.id:

@@ -8,7 +8,7 @@ class HelperCog:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command
+    @commands.command(name = "help")
     async def help(self, ctx, query: str = None):
         f"""This is the Cueball help page. Below should be a list of all commands that you can use in the main bot
         and each cog loaded. to reference this again, type `{self.bot.command_prefix}help`. If you want to get the
@@ -21,20 +21,20 @@ class HelperCog:
                 embed.description = "The command you\'re looking for was not found. " \
                                     f"Use `{self.bot.command_prefix}help` to get a list of availible commands."
             else:
-                embed.description = self.bot.get_command(query)['callback'].__doc__
+                embed.description = str(self.bot.get_command(query).callback.__doc__)
         else:
-            embed = discord.Embed(title = "Command: help", description = __doc__)
-            cogs = list(set([command.cog_name if command.cog_name is not None
-                             else "Main" for command in self.bot.commands]))
+            embed.description = __doc__
+            cogs = list(set([command.cog_name for command in self.bot.commands]))
             for cog in cogs:
-                embed.add_field(name = cog, value =
-                                "\n".join([f"'{self.bot.command_prefix}{command['trigger']}` " + (f"`<{param.name}>` "
-                                           if param.default is not inspect.Parameter.empty else f'`[{param.name}]` ')
+                embed.add_field(name = cog, inline = False, value =
+                                "\n".join(filter(None, [(f"`{self.bot.command_prefix}{command.name}` " + " ".join([f"`[{param.name}]`"
+                                           if param.default is not inspect.Parameter.empty else f"`<{param.name}>` "
                                            if param.name != "ctx" and param.name != "self" else ""
-                                           for command in self.bot.commands
-                                           for param in inspect.Signature(command['callback']).parameters]))
-        ctx.send(embed = embed)
+                                           for param in inspect.signature(command.callback).parameters.values()]))
+                                           if command.cog_name == cog else "" for command in self.bot.commands])))
+        await ctx.send(embed = embed)
 
 
 def setup(bot):
+    bot.remove_command('help')
     bot.add_cog(HelperCog(bot))
