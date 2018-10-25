@@ -10,6 +10,7 @@ import re
 
 
 class ThinkerCog:
+    """ThinkerCog is a cog that thinks and finds stuff that makes you think."""
     def __init__(self, bot):
         self.bot = bot
 

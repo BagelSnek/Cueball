@@ -21,7 +21,11 @@ class HelperCog:
                 embed.description = "The command you\'re looking for was not found. " \
                                     f"Use `{self.bot.command_prefix}help` to get a list of availible commands."
             else:
-                embed.description = str(self.bot.get_command(query).callback.__doc__)
+                embed.description = f"{self.bot.get_command(query).name} : " \
+                                    f"{str(self.bot.get_command(query).callback.__doc__)}"
+                if len(self.bot.get_command(query).aliases) > 0:
+                    embed.add_field(name = "Aliases", inline = False,
+                                    value = "\n".join(self.bot.get_command(query).aliases))
         else:
             embed.description = __doc__
             cogs = list(set([command.cog_name for command in self.bot.commands]))

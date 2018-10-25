@@ -98,17 +98,20 @@ async def get_bans(ctx):
                                          '\n'.join([y.name for y in await ctx.get_bans(ctx.message.guild)])))
 
 
-@bot.command(aliases = ['user'])
+@bot.command(aliases = ['user', 'whois'])
 async def info(ctx, user: discord.Member):
     """Gets info on a member, such as their ID."""
     embed = discord.Embed(title = "Command: info", color = 0x0000FF)
     try:
-        embed.add_field(name = "Name", value = user.name)
+        embed.description = user.name
         embed.add_field(name = "ID", value = user.id)
-        embed.add_field(name = "Joined at:", value = user.joined_at)
+        embed.add_field(name = "Joined at", value = user.joined_at)
+        embed.add_field(name = "Roles", inline = False,
+                        value = "\n".join(filter(None, [role.name if role.name != "@everyone" else None
+                                                        for role in user.roles])))
     except:
         embed.color = 0xFF0000
-        embed.description("How did you fuck up this command?")
+        embed.description = "How did you fuck up this command?"
     await ctx.send(embed = embed)
 
 
@@ -117,11 +120,8 @@ async def ping(ctx):
     """Pings the bot and gets a response time."""
     embed = discord.Embed(title = "Command: ping", color = 0x0000FF)
     try:
-        pingtime = time.time()
-        embed.description = "*Pinging...*"
+        embed.description = str(round(bot.latency*100, 4)) + "ms"
         await ctx.send(embed = embed)
-        net_ping = (time.time() - pingtime) * 1000
-        await ctx.edit_message(embed.description, f"**Pong!** Ping is `{net_ping:d}ms`")
     except:
         await ctx.send("How did you mess up the ping command? Just tell Xaereus.")
 
