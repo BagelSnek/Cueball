@@ -9,7 +9,7 @@ class TalkerCog:
     def __init__(self, bot):
         self.bot = bot
 
-        with open('cogs\\talkercog\\responses.json') as responseJSON:
+        with open('cogs/talkercog/responses.json') as responseJSON:
             self.responses = json.load(responseJSON)
         responseJSON.close()
 
