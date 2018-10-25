@@ -16,12 +16,17 @@ class TalkerCog:
     async def on_message(self, message):
         if message.author.bot:
             return
+
         if message.content.startswith(self.bot.user.name):
             return await message.channel.send("You called?")
         if message.content.lower().startswith("hello"):
             return await message.channel.send(random.choice(self.responses["hello"]))
         if "are you single" in message.content.lower():
             return await message.channel.send(random.choice(self.responses["single"]))
+        if "owo" in message.content.lower():
+            return await message.channel.send(random.choice(self.responses["owo"]))
+        if "trigger" in message.content.lower():
+            return await message.channel.send(random.choice(self.responses["triggered"]))
 
 
 def setup(bot):
