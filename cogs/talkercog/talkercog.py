@@ -24,7 +24,8 @@ class TalkerCog:
         if "are you single" in message.content.lower():
             return await message.channel.send(random.choice(self.responses["single"]))
         if "owo" in message.content.lower():
-            return await message.channel.send(random.choice(self.responses["owo"]))
+            return await message.channel.send("{0}{1}{0}".format(random.choice(self.responses['owo']['eye']),
+                                                                 random.choice(self.responses['owo']['mouth'])))
         if "trigger" in message.content.lower():
             return await message.channel.send(random.choice(self.responses["triggered"]))
 

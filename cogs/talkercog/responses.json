@@ -71,13 +71,10 @@
     "What's up internet, it's ya boy, SkinnyPenis.",
     "Hey, Vsauce - Michael here! What is Discord, and how much does it weigh?"
   ],
-  "owo": [
-    "oWo",
-    "uwu",
-    "O-o",
-    "^-^",
-    "._."
-  ],
+  "owo": {
+    "eye": "oOu^&;.,",
+    "mouth": "_-wW=~m"
+  },
   "triggered": [
     "***R E E E E E E***",
     "**Triggered.**",
