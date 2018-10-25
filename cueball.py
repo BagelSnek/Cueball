@@ -6,11 +6,12 @@ import time
 import json
 import discord
 from discord.ext.commands import Bot
+from discord.ext import commands
 
 # Load bot settings
 if not os.path.isfile('botSettings.json'):
     # Creates file with default settings
-    bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": []}
+    bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": [], "auth_users": []}
     json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
 else:
     with open('botSettings.json') as botSettings:
@@ -18,9 +19,14 @@ else:
     botSettings.close()
     print("Settings successfully loaded.")
 
-bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['prefix'],
-          activity = discord.Game(name = bot_settings['currActivity']),
-          case_insensitive = True)
+bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['prefix'], case_insensitive = True,
+          activity = discord.Game(name = bot_settings['currGame']))
+
+
+def check_authorized():
+    def predicate(ctx):
+        return str(ctx.message.author.id) in bot_settings['auth_users']
+    return commands.check(predicate)
 
 
 def update_botsettings(key, value):
@@ -42,21 +48,27 @@ async def on_ready():
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
 
 
+@bot.listen('check_authorized')
+async def spook(ctx):
+    if not check_authorized():
+        await ctx.send(embed = discord.Embed(title = "Permission Error", color = 0xFF0000,
+                                             description = "You do not have permission to"
+                                                           f" use `{bot.command_prefix}{ctx.command.name}`!"))
+
+
 # Default Cueball commands
 @bot.command(aliases = ['remove', 'delete'])
+@commands.has_permissions(manage_messages = True)
 async def purge(ctx, amount: int):
     """Bulk-deletes messages from the channel."""
-    if ctx.message.author.guild_permissions.administrator:
-        return await ctx.channel.delete([x for x in ctx.logs_from(ctx.message.channel, limit = amount)])
-    await ctx.send(embed = discord.Embed(title = "Command: purge", color = 0xFF0000,
-                                         description = "Ya done messed up, bother Xaereus about it."))
+    await ctx.channel.delete([x for x in ctx.logs_from(ctx.message.channel, limit = amount)])
 
 
 @bot.command(name = "listRoles", aliases = ["roles"])
 async def list_roles(ctx):
     """Lists the current roles on the guild."""
     await ctx.send(embed = discord.Embed(title = "Command: listRoles", color = 0x0000FF,
-                                         description = '\n'.join([role.name for role in ctx.message.guild.roles])))
+                                         description = '\n'.join([f"`{role.name}`" for role in ctx.message.guild.roles])))
 
 
 @bot.command(aliases = ['say'])
@@ -69,25 +81,14 @@ async def echo(ctx, *say):
         await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
 
 
-@bot.command(name = "changeGame", aliases = ["gameChange", "changeActivity"])
-async def change_game(ctx, *activity):
+@bot.command(name = "changeGame", aliases = ["gameChange", "changePlaying"])
+@check_authorized()
+async def change_game(ctx, *game):
     """Changes what the bot is playing."""
-    if ctx.message.author.guild_permissions.administrator:
-        await bot.change_presence(activity =
-                                  discord.Game(name = update_botsettings('currActivity', ' '.join(activity))))
-        await ctx.send(embed = discord.Embed(title = "Command: changeGame", color = 0x0000FF,
-                                             description = f"Game was changed to {' '.join(activity)}"))
-    else:
-        await ctx.send(embed = discord.Embed(title = "Command: changeGame", color = 0xFF0000,
-                                             description = "You do not have permission to use this command!"))
-
-
-@bot.command(name = "listGuilds", aliases = ["guilds", "guildList"])
-async def list_guilds(ctx):
-    """Shows how many guilds the bot is active on."""
-    await ctx.send(embed = discord.Embed(title = "Command: listGuilds", color = 0x0000FF,
-                                         description =
-                                         '\n'.join([f"ID - {guild.id} : Name - {guild.name}" for guild in bot.guilds])))
+    await bot.change_presence(game =
+                              discord.Game(name = update_botsettings('currGame', ' '.join(game))))
+    await ctx.send(embed = discord.Embed(title = "Command: changeGame", color = 0x0000FF,
+                                         description = f"Game was changed to {' '.join(game)}"))
 
 
 @bot.command(name = "getBans", aliases = ["listBans", "bans"])
@@ -120,32 +121,32 @@ async def ping(ctx):
     """Pings the bot and gets a response time."""
     embed = discord.Embed(title = "Command: ping", color = 0x0000FF)
     try:
-        embed.description = str(round(bot.latency*100, 4)) + "ms"
+        embed.description = str(round(bot.latency * 100, 4)) + "ms"
         await ctx.send(embed = embed)
     except:
         await ctx.send("How did you mess up the ping command? Just tell Xaereus.")
 
 
 @bot.command()
-async def load_initial(ctx):
-    """Loads startup extensions."""
-    if __name__ == "__main__":
-        for extension_name in bot_settings['initial_extensions']:
-            try:
-                bot.load_extension(extension_name)
-                await ctx.send(f"Loaded extension: '{extension_name}'")
-            except (discord.ClientException, ImportError) as exc:
-                print(f'Failed to load extension {extension_name}\n{type(exc).__name__}: {exc}')
+@check_authorized()
+async def load(ctx, extension_name: str):
+    """Loads an extension."""
+    try:
+        bot.load_extension(extension_name)
+        await ctx.send(f"Loaded extension: `{extension_name}`")
+    except (discord.ClientException, ImportError) as exc:
+        await ctx.send(f"Failed to load extension {extension_name}\n{type(exc).__name__}: {exc}")
 
 
 @bot.command()
+@check_authorized()
 async def unload(ctx, extension_name: str):
     """Unloads an extension."""
-    if ctx.message.author.guild_permissions.administrator:
+    try:
         bot.unload_extension(extension_name)
-        await ctx.send(f"`{extension_name} unloaded.`")
-    else:
-        await ctx.send("Ha, you thought.")
+        await ctx.send(f"Unloaded extension: `{extension_name}`")
+    except (discord.ClientException, ImportError) as exc:
+        await ctx.send(f"Failed to unload extension {extension_name}\n{type(exc).__name__}: {exc}")
 
 
 @bot.command()
@@ -155,25 +156,22 @@ async def about(ctx):
     embed.add_field(name = "Name", value = bot.user.name)
     embed.add_field(name = "Built by", value = "Machoo and Xaereus")
     embed.add_field(name = "Running on", value = str(platform.platform()))
+    embed.add_field(name = "Github", value = "https://github.com/BagelSnek/Cueball")
+    embed.add_field(name = "Servers", inline = False,
+                    value = "\n".join([f"`ID - {guild.id} : Name - {guild.name}`" for guild in bot.guilds]))
     if len(bot_settings['initial_extensions']) > 0:
-        embed.add_field(name = "Extensions", value = '\n'.join(f"**{x[5:]}**" for x in bot_settings['initial_extensions']))
+        embed.add_field(name = "Extensions", value = '\n'.join(f"`{x[x.rindex('.') + 1:]}`"
+                                                               for x in bot_settings['initial_extensions']))
     await ctx.send(embed = embed)
 
 
-@bot.command(aliases = ['gh', 'code'])
-async def github(ctx):
-    """Gives you a link to the GitHub website."""
-    await ctx.send("**GitHub:** https://github.com/BagelSnek/Cueball")
-
-
-if __name__ == "__main__":
-    for extension in bot_settings["initial_extensions"]:
+if __name__ == '__main__':
+    for extension in bot_settings['initial_extensions']:
         try:
             bot.load_extension(extension)
-            print(f"Loaded extension '{extension}'")
+            print(f"Loaded extension `{extension}`")
         except (AttributeError, ImportError) as e:
-            print(f'Failed to load_initial extension {extension}\n{type(e).__name__}: {e}')
-    bot.run("NDc3ODAzODc4ODA1NjY3ODQw.Dq477Q.qf5gI2AQfatuoj8Vysu5mvhCXFE", reconnect = True)
-    # with open('token.txt') as tokentxt:
-    #     token = tokentxt.read()
-    #     bot.run(token)
+            print(f'Failed to load extension `{extension}`\n{type(e).__name__}: {e}')
+    with open('token.txt', 'r') as tokentxt:
+        token = tokentxt.read()
+    bot.run(token)

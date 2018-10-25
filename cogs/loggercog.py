@@ -21,8 +21,8 @@ class LoggerCog:
         self.cmdLogger.addHandler(self.cmdHandler)
 
     async def on_command(self, ctx):
-        self.cmdLogger.info(f"Command :: {ctx.command})")
-        print(f"{datetime.datetime.now()} :: {ctx.command}")
+        self.cmdLogger.info(f"Command :: {ctx.message.content}")
+        print(f"{datetime.datetime.now()} :: {ctx.message.content}")
 
 
 def setup(bot):
