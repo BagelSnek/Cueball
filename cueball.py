@@ -174,4 +174,5 @@ if __name__ == '__main__':
             print(f'Failed to load extension `{extension}`\n{type(e).__name__}: {e}')
     with open('token.txt', 'r') as tokentxt:
         token = tokentxt.read()
-    bot.run(token)
+    print(token)
+    bot.run(token, reconnect = True)
