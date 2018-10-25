@@ -1,6 +1,6 @@
 
 token.txt
 *.log
-*.json
+botSettings.json
 *.idea
 *.pyc
