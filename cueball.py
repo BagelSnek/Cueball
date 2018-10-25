@@ -173,6 +173,8 @@ if __name__ == '__main__':
         except (AttributeError, ImportError) as e:
             print(f'Failed to load extension `{extension}`\n{type(e).__name__}: {e}')
     with open('token.txt', 'r') as tokentxt:
-        token = tokentxt.read()[:-1]
-    print(token)
+        token = tokentxt.read()
+    tokentxt.close()
+    if "win" not in str(platform.platform()).lower():
+        token = token[:-1]
     bot.run(token, reconnect = True)
