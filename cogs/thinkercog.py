@@ -50,8 +50,8 @@ class ThinkerCog:
     async def answer(self, ctx, *question: str):
         """Answers a basic question."""
         embed = discord.Embed(title = "Command: answer", color = 0x0000FF,
-                              description = " ".join(*question))
-        questions = " ".join(*question).strip('?').split(' or ')
+                              description = " ".join(question))
+        questions = " ".join(question).strip('?').split(' or ')
         if len(questions) == 1:
             embed.set_footer(text =
                              random.choice(["yes", "yas", "yep", "yup", "no", "nop", "nope", "noperino"]).capitalize())

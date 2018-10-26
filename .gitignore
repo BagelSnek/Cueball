@@ -4,3 +4,4 @@ token.txt
 botSettings.json
 *.idea
 *.pyc
+*.cpython-36.pyc

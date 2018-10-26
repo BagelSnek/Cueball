@@ -69,15 +69,27 @@
     "*Verpiss dich.*",
     "What's poppin'?",
     "What's up internet, it's ya boy, SkinnyPenis.",
-    "Hey, Vsauce - Michael here! What is Discord, and how much does it weigh?"
+    "Hey, Vsauce - Michael here! What is Discord, and how much does it weigh?",
+    "Sup.",
+    "Greetings, traveller."
   ],
   "owo": {
-    "eye": "oOu^&;.,",
-    "mouth": "_-wW=~m"
+    "eye": "ae@oO0u^&;.,x",
+    "mouth": "_-wW=~km3"
   },
   "triggered": [
     "***R E E E E E E***",
     "**Triggered.**",
     "Calm your funbags."
+  ],
+  "boop": [
+    "boop",
+    "bop",
+    "beep",
+    "bap",
+    "bup",
+    "bip",
+    "bwop",
+    "bwoop"
   ]
 }

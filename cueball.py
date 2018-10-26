@@ -26,6 +26,7 @@ bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['pr
 def check_authorized():
     def predicate(ctx):
         return str(ctx.message.author.id) in bot_settings['auth_users']
+
     return commands.check(predicate)
 
 
@@ -51,9 +52,28 @@ async def on_ready():
 @bot.listen('check_authorized')
 async def spook(ctx):
     if not check_authorized():
-        await ctx.send(embed = discord.Embed(title = "Permission Error", color = 0xFF0000,
-                                             description = "You do not have permission to"
+        await ctx.send(embed = discord.Embed(title = "Authorization Error", color = 0xFF0000,
+                                             description = "You are not authorized to"
                                                            f" use `{bot.command_prefix}{ctx.command.name}`!"))
+
+
+@bot.listen('on_command_error')
+async def handle_error(ctx, error):
+    """Simple error handler."""
+    if isinstance(error, commands.MissingPermissions):
+        return await ctx.send(embed = discord.Embed(title = "Permission Error", color = 0xFF0000,
+                                                    description = "You do not have permission to"
+                                                                  f" use `{bot.command_prefix}{ctx.command.name}`!"))
+    if isinstance(error, commands.MissingRequiredArgument):
+        return await ctx.send(embed = discord.Embed(title = "Missing Required Argument", color = 0xFF0000,
+                                                    description = f"`{bot.command_prefix}{ctx.command.name}` "
+                                                                  "lacks a necessary argument"))
+    elif isinstance(error, commands.CommandNotFound):
+        pass
+    elif isinstance(error.original, discord.Forbidden):
+        return await ctx.send(embed = discord.Embed(title = "Bot Missing Permission", color = 0xFF0000,
+                                                    description = "I lack the permission to execute "
+                                                                  f"{bot.command_prefix}{ctx.command.name}"))
 
 
 # Default Cueball commands
@@ -68,7 +88,9 @@ async def purge(ctx, amount: int):
 async def list_roles(ctx):
     """Lists the current roles on the guild."""
     await ctx.send(embed = discord.Embed(title = "Command: listRoles", color = 0x0000FF,
-                                         description = '\n'.join([f"`{role.name}`" for role in ctx.message.guild.roles])))
+                                         description = "\n".join(filter(None, [f"`{role.name}`"
+                                                                               if role.name != "@everyone" else None
+                                                                               for role in ctx.message.guild.roles]))))
 
 
 @bot.command(aliases = ['say'])
@@ -171,7 +193,7 @@ if __name__ == '__main__':
             bot.load_extension(extension)
             print(f"Loaded extension `{extension}`")
         except (AttributeError, ImportError) as e:
-            print(f'Failed to load extension `{extension}`\n{type(e).__name__}: {e}')
+            print(f"Failed to load extension `{extension}`\n{type(e).__name__}: {e}")
     with open('token.txt', 'r') as tokentxt:
         token = tokentxt.read()
     tokentxt.close()

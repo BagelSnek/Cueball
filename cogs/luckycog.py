@@ -9,5 +9,5 @@ class LuckyCog:
     @commands.command(name = "8ball")
     async def _8ball(self, ctx, *question: str):
         embed = discord.Embed(title = "Command: 8ball", color = 0x000000)
-        embed.set_footer(text = " ".join(*question))
+        embed.set_footer(text = " ".join(question))
         ctx.send(embed = embed)
