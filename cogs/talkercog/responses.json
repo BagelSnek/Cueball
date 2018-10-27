@@ -74,7 +74,7 @@
     "Greetings, traveller."
   ],
   "owo": {
-    "eye": "ae@oO0u^&;.,x",
+    "eye": "@oO0u^;.,x",
     "mouth": "_-wW=~km3"
   },
   "triggered": [
@@ -87,9 +87,6 @@
     "bop",
     "beep",
     "bap",
-    "bup",
-    "bip",
-    "bwop",
     "bwoop"
   ]
 }

@@ -24,7 +24,7 @@ class TalkerCog:
             return await message.channel.send(random.choice(self.responses['hello']))
         if "are you single" in clean_msg:
             return await message.channel.send(random.choice(self.responses['single']))
-        if bool(re.search(r"\b(?P<eye>[ae@oO0u^&;.,x])(?P<mouth>[_\-wW=~km3])(?P=eye)\b", message.content)):
+        if bool(re.search(r"\b(?P<eye>[@oO0u^;.,x])(?P<mouth>[_\-wW=~km3])(?P=eye)\b", message.content)):
             return await message.channel.send("{0}{1}{0}".format(random.choice(self.responses['owo']['eye']),
                                                                  random.choice(self.responses['owo']['mouth'])))
         if "trigger" in clean_msg:
