@@ -60,12 +60,16 @@
     "My last girlfriend cheated on me with a Puerto Rican trucker named Bob.",
     "I've been single since yesterday."
   ],
+
   "hello": {
     "prompts": [
       "hi",
       "hello",
       "yo",
-      "greetings"
+      "greetings",
+      "whats up",
+      "heya",
+      "hey there"
     ],
     "responses": [
       "Wassup?",
@@ -78,9 +82,13 @@
       "What's up internet, it's ya boy, SkinnyPenis.",
       "Hey, Vsauce - Michael here! What is Discord, and how much does it weigh?",
       "Sup.",
-      "Greetings, traveller."
+      "Greetings, traveller.",
+      "Legends spoke of the day you would come.",
+      "Hail, adventurer!",
+      "`<Jumps behind General Grievous>` *Hello there!*"
     ]
   },
+
   "bye": [
     "Begone, thot!",
     "I'll miss ya, my dude.",
@@ -88,17 +96,23 @@
     "Smell ya later.",
     "Safe travels, and godspeed in your journey.",
     "I'll never forget what we had together.",
-    "Fine, I see how it is."
+    "Fine, I see how it is.",
+    "This is and **A** to **B** server, so you can **C** yourself out.",
+    "Leave my domain, peasant."
   ],
+
   "owo": {
     "eye": "@oO0u^;.,x",
     "mouth": "_-wW=~km3"
   },
+
   "triggered": [
     "***R E E E E E E***",
     "**Triggered.**",
-    "Calm your funbags."
+    "Calm your funbags.",
+    "***Calllllllmmmmmmm***, child."
   ],
+
   "boop": [
     "boop",
     "bop",
@@ -106,25 +120,35 @@
     "bap",
     "bwoop"
   ],
+
   "oof": [
-    "```OOF!```",
+    "`OOF!`",
     "~~__***O O O O O O O O O O O O O O O F***__~~",
-    "OooOOOoooOoooOoooOoOof."
+    "OooOOOoooOoooOoooOoOof.",
+    "Ya done oofed yourself.",
+    "This is so sad. Connor, play Despacito."
   ],
+
   "kachigga": [
     "Kachow!",
     "Kachigga! Kachow!",
-    "Kachigga!"
+    "Kachigga!",
+    "The fuck did you just call me?"
   ],
+
   "no u": [
     "No you.",
     "Nay, thee.",
-    "Neigh, thyself.",
-    "No ***U***."
+    "Nigh, thyself.",
+    "No ***U***.",
+    "Your mother is straightn't.",
+    "Hey, Vsauce - Michael here! Your mother is straight.\n\n\n*Or is she?* `<Science music plays>`"
   ],
+
   "mentioned": [
     "I heard my name?",
     "You called?",
-    "I have been summoned."
+    "I have been summoned.",
+    "Have you come to kill me?"
   ]
 }
