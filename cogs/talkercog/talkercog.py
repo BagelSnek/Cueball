@@ -13,16 +13,16 @@ class TalkerCog:
         responseJSON.close()
 
     async def on_message(self, message):
-        if message.author == self.bot.user:
+        if message.author.bot:
             return
 
         clean_msg = re.sub('\W+', ' ', message.content.lower())
 
-        if clean_msg.startswith(self.bot.user.name.lower()):
-            return await message.channel.send("You called?")
-        if clean_msg.startswith("hello"):
-            return await message.channel.send(random.choice(self.responses['hello']))
-        if "are you single" in clean_msg:
+        if clean_msg.startswith(self.bot.user.name.lower()) or self.bot.user in message.mentions:
+            return await message.channel.send(random.choice(self.responses['mentioned']))
+        if len(set(self.responses['hello']['prompts']).intersection(set(clean_msg.split(' ')))) > 0:
+            return await message.channel.send(random.choice(self.responses['hello']['responses']))
+        if bool(re.search(r"(are)|r (you)|u single", message.content)):
             return await message.channel.send(random.choice(self.responses['single']))
         if bool(re.search(r"\b(?P<eye>[@oO0u^;.,x])(?P<mouth>[_\-wW=~km3])(?P=eye)\b", message.content)):
             return await message.channel.send("{0}{1}{0}".format(random.choice(self.responses['owo']['eye']),
@@ -31,6 +31,14 @@ class TalkerCog:
             return await message.channel.send(random.choice(self.responses['triggered']))
         if len(set(self.responses['boop']).intersection(set(clean_msg.split(' ')))) > 0:
             return await message.channel.send(random.choice(self.responses['boop']).capitalize() + "!")
+        if "oof" in clean_msg:
+            return await message.channel.send(random.choice(self.responses['oof']))
+        if "bye" in clean_msg:
+            return await message.channel.send(random.choice(self.responses['bye']))
+        if "no u" in clean_msg:
+            return await message.channel.send(random.choice(self.responses['no u']))
+        if "kachigga" in clean_msg:
+            return await message.channel.send(random.choice(self.responses['kachigga']))
 
 
 def setup(bot):

@@ -60,18 +60,35 @@
     "My last girlfriend cheated on me with a Puerto Rican trucker named Bob.",
     "I've been single since yesterday."
   ],
-  "hello": [
-    "Wassup?",
-    "Yo.",
-    "Greetings, human.",
-    "Wazzzup!",
-    "Hey.",
-    "*Verpiss dich.*",
-    "What's poppin'?",
-    "What's up internet, it's ya boy, SkinnyPenis.",
-    "Hey, Vsauce - Michael here! What is Discord, and how much does it weigh?",
-    "Sup.",
-    "Greetings, traveller."
+  "hello": {
+    "prompts": [
+      "hi",
+      "hello",
+      "yo",
+      "greetings"
+    ],
+    "responses": [
+      "Wassup?",
+      "Yo.",
+      "Greetings, human.",
+      "Wazzzup!",
+      "Hey.",
+      "*Verpiss dich.*",
+      "What's poppin'?",
+      "What's up internet, it's ya boy, SkinnyPenis.",
+      "Hey, Vsauce - Michael here! What is Discord, and how much does it weigh?",
+      "Sup.",
+      "Greetings, traveller."
+    ]
+  },
+  "bye": [
+    "Begone, thot!",
+    "I'll miss ya, my dude.",
+    "***Don'T LeaVe ME lIkE FAtheR Did!!1!1!***",
+    "Smell ya later.",
+    "Safe travels, and godspeed in your journey.",
+    "I'll never forget what we had together.",
+    "Fine, I see how it is."
   ],
   "owo": {
     "eye": "@oO0u^;.,x",
@@ -88,5 +105,26 @@
     "beep",
     "bap",
     "bwoop"
+  ],
+  "oof": [
+    "```OOF!```",
+    "~~__***O O O O O O O O O O O O O O O F***__~~",
+    "OooOOOoooOoooOoooOoOof."
+  ],
+  "kachigga": [
+    "Kachow!",
+    "Kachigga! Kachow!",
+    "Kachigga!"
+  ],
+  "no u": [
+    "No you.",
+    "Nay, thee.",
+    "Neigh, thyself.",
+    "No ***U***."
+  ],
+  "mentioned": [
+    "I heard my name?",
+    "You called?",
+    "I have been summoned."
   ]
 }

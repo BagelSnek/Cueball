@@ -74,6 +74,8 @@ async def handle_error(ctx, error):
         return await ctx.send(embed = discord.Embed(title = "Bot Missing Permission", color = 0xFF0000,
                                                     description = "I lack the permission to execute "
                                                                   f"{bot.command_prefix}{ctx.command.name}"))
+    else:
+        print(f"{type(error).__name__}: {error}")
 
 
 # Default Cueball commands
@@ -81,7 +83,7 @@ async def handle_error(ctx, error):
 @commands.has_permissions(manage_messages = True)
 async def purge(ctx, amount: int):
     """Bulk-deletes messages from the channel."""
-    await ctx.channel.delete([x for x in ctx.logs_from(ctx.message.channel, limit = amount)])
+    await ctx.message.channel.delete_messages(await ctx.channel.history(limit = amount).flatten())
 
 
 @bot.command(name = "listRoles", aliases = ["roles"])
