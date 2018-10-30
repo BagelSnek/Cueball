@@ -10,9 +10,9 @@ class HelperCog:
 
     @commands.command(name = "help")
     async def help(self, ctx, query: str = None):
-        f"""This is the Cueball help page. Below should be a list of all commands that you can use in the main bot
-        and each cog loaded. to reference this again, type `{self.bot.command_prefix}help`. If you want to get the
-        help for a specific command, use `{self.bot.command_prefix}help <command>`."""
+        """This is the Cueball help page! Below is a list of all commands that you can use in the main bot and each
+        cog loaded. To reference this again, use `{0}help`, and if you want to get the help for a specific command,
+        use `{0}help <command>`. """
 
         embed = discord.Embed(title = "Command: help", color = 0xFFFFFF)
         if query is not None:
@@ -27,10 +27,10 @@ class HelperCog:
                     embed.add_field(name = "Aliases", inline = False,
                                     value = "\n".join(self.bot.get_command(query).aliases))
         else:
-            embed.description = __doc__
+            embed.description = str(self.bot.get_command('help').callback.__doc__).format(self.bot.command_prefix)
             cogs = list(set([command.cog_name for command in self.bot.commands]))
             for cog in cogs:
-                embed.add_field(name = cog, inline = False, value =
+                embed.add_field(name = cog if cog is not None else "Main", inline = False, value =
                                 "\n".join(filter(None, [(f"`{self.bot.command_prefix}{command.name}` " + " ".join([f"`[{param.name}]`"
                                            if param.default is not inspect.Parameter.empty else f"`<{param.name}>` "
                                            if param.name != "ctx" and param.name != "self" else ""

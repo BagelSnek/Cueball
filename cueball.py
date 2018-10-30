@@ -19,8 +19,8 @@ else:
     botSettings.close()
     print("Settings successfully loaded.")
 
-bot = Bot(description = "Cueball shall rule.", command_prefix = bot_settings['prefix'], case_insensitive = True,
-          activity = discord.Game(name = bot_settings['currGame']))
+bot = Bot(command_prefix = bot_settings['prefix'], case_insensitive = True,
+          game = discord.Game(name = bot_settings['currGame']))
 
 
 def check_authorized():
@@ -36,17 +36,18 @@ def update_botsettings(key, value):
     return value
 
 
-# Start bot and print status to console
+# Bot startup output
 @bot.event
 async def on_ready():
     """Where we droppin', boys?"""
-    print(f"{time.ctime()} :: Booted as {bot.user.name} (ID - {bot.user.id})\n")
+    print(f"{time.ctime()} :: Booted as {bot.user.name} (ID - {bot.user.id})")
+    print(f"Playing game: {bot_settings['currGame']}\n")
     print("Connected guilds:")
     for guild in bot.guilds:
         print(f"\tID - {guild.id} : Name - {guild.name}")
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
-    print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
+    print(f"Running on: {platform.system()} {platform.release()} ({os.name})\n\n")
 
 
 @bot.listen('check_authorized')
@@ -75,7 +76,7 @@ async def handle_error(ctx, error):
                                                     description = "I lack the permission to execute "
                                                                   f"{bot.command_prefix}{ctx.command.name}"))
     else:
-        print(f"{type(error).__name__}: {error}")
+        return await ctx.send(embed = discord.Embed(title = "Error", value = f"{type(error).__name__}: {error}"))
 
 
 # Default Cueball commands
@@ -196,6 +197,8 @@ if __name__ == '__main__':
             print(f"Loaded extension `{extension}`")
         except (AttributeError, ImportError) as e:
             print(f"Failed to load extension `{extension}`\n{type(e).__name__}: {e}")
+    print("Cogs loaded.\n\n")
+
     with open('token.txt', 'r') as tokentxt:
         token = tokentxt.read()
     tokentxt.close()

@@ -69,7 +69,10 @@
       "greetings",
       "whats up",
       "heya",
-      "hey there"
+      "hey there",
+      "howdy",
+      "whats poppin",
+      "salutations"
     ],
     "responses": [
       "Wassup?",
@@ -85,7 +88,8 @@
       "Greetings, traveller.",
       "Legends spoke of the day you would come.",
       "Hail, adventurer!",
-      "`<Jumps behind General Grievous>` *Hello there!*"
+      "`<Jumps behind General Grievous>` *Hello there!*",
+      "Welcome to my domain."
     ]
   },
 
