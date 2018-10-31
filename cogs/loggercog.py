@@ -10,13 +10,13 @@ class LoggerCog:
 
         self.debugLogger = logging.getLogger('discord')
         self.debugLogger.setLevel(logging.DEBUG)
-        self.debugHandler = logging.FileHandler(filename = 'logs/cueball_debug.log', encoding = 'utf-8', mode = 'w')
+        self.debugHandler = logging.FileHandler(filename = 'logs/cueball_debug.log', encoding = 'utf-8', mode = 'a')
         self.debugHandler.setFormatter(logging.Formatter('%(asctime)s :: %(levelname)s ::\t%(name)s:  %(message)s'))
         self.debugLogger.addHandler(self.debugHandler)
 
         self.cmdLogger = logging.getLogger(__name__)
         self.cmdLogger.setLevel(logging.INFO)
-        self.cmdHandler = logging.FileHandler(filename = 'logs/cueball_cmd.log', encoding = 'utf-8', mode = 'w')
+        self.cmdHandler = logging.FileHandler(filename = 'logs/cueball_cmd.log', encoding = 'utf-8', mode = 'a')
         self.cmdHandler.setFormatter(logging.Formatter('%(asctime)s ::\t %(message)s'))
         self.cmdLogger.addHandler(self.cmdHandler)
 

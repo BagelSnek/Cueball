@@ -18,7 +18,7 @@ class TalkerCog:
 
         clean_msg = re.sub(r'([^a-z0-9\s])', '', message.content.lower())
 
-        if clean_msg.startswith(self.bot.user.name.lower()) or self.bot.user in message.mentions:
+        if clean_msg.startswith(self.bot.user.name.lower()) or message.content == self.bot.user.mention:
             return await message.channel.send(random.choice(self.responses['mentioned']))
         if len(set(self.responses['hello']['prompts']).intersection(set(clean_msg.split(' ')))) > 0:
             return await message.channel.send(random.choice(self.responses['hello']['responses']))
@@ -39,6 +39,8 @@ class TalkerCog:
             return await message.channel.send(random.choice(self.responses['no u']))
         if "kachigga" in clean_msg:
             return await message.channel.send(random.choice(self.responses['kachigga']))
+        if "connor" in clean_msg:
+            return await message.channel.send("*They said senpai-san's name!* :hearts:", delete_after = 5)
 
 
 def setup(bot):
