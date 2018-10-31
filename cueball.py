@@ -11,7 +11,7 @@ from discord.ext import commands
 # Load bot settings
 if not os.path.isfile('botSettings.json'):
     # Creates file with default settings
-    bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": [], "auth_users": []}
+    bot_settings = {"prefix": "??", "currGame": "", "initial_extensions": [], "auth_users": []}
     json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
 else:
     with open('botSettings.json') as botSettings:
@@ -61,6 +61,7 @@ async def spook(ctx):
 @bot.listen('on_command_error')
 async def handle_error(ctx, error):
     """Simple error handler."""
+    print(f"{type(error).__name__}: {error}")
     if isinstance(error, commands.MissingPermissions):
         return await ctx.send(embed = discord.Embed(title = "Permission Error", color = 0xFF0000,
                                                     description = "You do not have permission to"
@@ -110,8 +111,8 @@ async def echo(ctx, *say):
 @check_authorized()
 async def change_game(ctx, *game):
     """Changes what the bot is playing."""
-    await bot.change_presence(game =
-                              discord.Game(name = update_botsettings('currGame', ' '.join(game))))
+    update_botsettings('currGame', ' '.join(game))
+    await bot.change_presence(game = discord.Game(name = ' '.join(game)))
     await ctx.send(embed = discord.Embed(title = "Command: changeGame", color = 0x0000FF,
                                          description = f"Game was changed to {' '.join(game)}"))
 
