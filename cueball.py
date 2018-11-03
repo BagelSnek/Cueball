@@ -12,7 +12,7 @@ from discord.ext import commands
 if not os.path.isfile('botSettings.json'):
     # Creates file with default settings
     bot_settings = {"prefix": "??", "currGame": "", "initial_extensions": [], "auth_users": []}
-    json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
+    json.dump(bot_settings, open('botSettings.json', 'w'), indent = 2)
 else:
     with open('botSettings.json') as botSettings:
         bot_settings = json.load(botSettings)
@@ -32,7 +32,7 @@ def check_authorized():
 
 def update_botsettings(key, value):
     bot_settings[key] = value
-    json.dump(bot_settings, open('botSettings.json', 'w'), indent = 4)
+    json.dump(bot_settings, open('botSettings.json', 'w'), indent = 2)
     return value
 
 
@@ -95,16 +95,6 @@ async def list_roles(ctx):
                                          description = "\n".join(filter(None, [f"`{role.name}`"
                                                                                if role.name != "@everyone" else None
                                                                                for role in ctx.message.guild.roles]))))
-
-
-@bot.command(aliases = ['say'])
-async def echo(ctx, *say):
-    """Makes the bot talk."""
-    try:
-        await ctx.message.delete()
-        await ctx.send(' '.join(say))
-    except:
-        await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
 
 
 @bot.command(name = "changeGame", aliases = ["gameChange", "changePlaying"])

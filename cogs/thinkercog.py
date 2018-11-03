@@ -49,8 +49,7 @@ class ThinkerCog:
     @commands.command()
     async def answer(self, ctx, *question: str):
         """Answers a basic question."""
-        embed = discord.Embed(title = "Command: answer", color = 0x0000FF,
-                              description = " ".join(question))
+        embed = discord.Embed(title = "Command: answer", color = 0x0000FF, description = " ".join(question))
         questions = " ".join(question).strip('?').split(' or ')
         if len(questions) == 1:
             embed.set_footer(text =

@@ -5,3 +5,4 @@ botSettings.json
 *.idea
 *.pyc
 *.cpython-36.pyc
+cogs/contestcog/contesthistory.json

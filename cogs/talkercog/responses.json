@@ -7,7 +7,7 @@
     "Depends. What day is it?",
     "I'm not, but I heard Xaereus is.",
     "I'm not, but I heard Cryst4l is.",
-    "I'm not, but I heard Guava is.",
+    "I'm not, but I heard *Connor is...*",
     "Depends on if it fits...",
     "Do I ***look*** single to you?",
     "Never ask me that again.",
@@ -58,7 +58,8 @@
     "My last girlfriend put a restraining order on me.",
     "My last girlfriend killed my dog.",
     "My last girlfriend cheated on me with a Puerto Rican trucker named Bob.",
-    "I've been single since yesterday."
+    "I've been single since yesterday.",
+    "One day Connor will notice me..."
   ],
 
   "hello": {
@@ -89,7 +90,17 @@
       "Legends spoke of the day you would come.",
       "Hail, adventurer!",
       "`<Jumps behind General Grievous>` *Hello there!*",
-      "Welcome to my domain."
+      "Welcome to my domain.",
+      "Somebody ring the Dinkster?"
+    ],
+    "morining": [
+      "Goodmorning!",
+      "Rise and shine.",
+      "A new dawn rises."
+    ],
+    "night": [
+      "Goodnight.",
+      "Sleep well."
     ]
   },
 
@@ -101,14 +112,14 @@
     "Safe travels, and godspeed in your journey.",
     "I'll never forget what we had together.",
     "Fine, I see how it is.",
-    "This is and **A** to **B** server, so you can **C** yourself out.",
+    "This is an **A** to **B** server, so you can **C** yourself out.",
     "Leave my domain, peasant.",
     "May ye find greener grass elsewhere."
   ],
 
   "owo": {
     "eye": "@oO0u^;.,x",
-    "mouth": "_-wW=~km3"
+    "mouth": "_-w=~km3"
   },
 
   "triggered": [
@@ -121,11 +132,11 @@
   ],
 
   "boop": [
-    "boop",
-    "bop",
-    "beep",
-    "bap",
-    "bwoop"
+    "Boop!",
+    "Bop!",
+    "Beep!",
+    "Bap!",
+    "Bwoop!"
   ],
 
   "oof": [
@@ -149,7 +160,7 @@
     "Nigh, thyself.",
     "No ***U***.",
     "Your mother is straightn't.",
-    "Hey, Vsauce - Michael here! Your mother is straight.\n\n\n*Or is she?* `<Science music plays>`"
+    "Hey, Vsauce - Michael here! Your mother is straight.\n\n\n\n\n*Or is she?* `<Science music plays>`"
   ],
 
   "mentioned": [

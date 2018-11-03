@@ -1,3 +1,4 @@
+import re
 import discord
 from discord.ext import commands
 
@@ -32,6 +33,22 @@ class SocialCog:
             else:
                 embed.description = f"{ctx.message.author.mention} fucking beat {member.mention}!"
         await ctx.send(embed = embed)
+
+    @commands.command(aliases = ["bigitize", "bigicate", "biginate", "enlarge"])
+    async def bigify(self, ctx, *message: str):
+        """Send a large, emoji constructed message of whatever sentence you want."""
+        await ctx.message.delete()
+        await ctx.send("".join([f":regional_indicator_{letter}:" if letter != " " else "   " for letter in
+                               [char for char in re.sub(r'([^a-z0-9\s])+', '', ' '.join(message).lower())]]))
+
+    @commands.command(aliases = ['say'])
+    async def echo(self, ctx, *say):
+        """Makes the bot talk."""
+        try:
+            await ctx.message.delete()
+            await ctx.send(' '.join(say))
+        except:
+            await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
 
 
 def setup(bot):
