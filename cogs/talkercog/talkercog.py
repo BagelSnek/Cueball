@@ -30,7 +30,7 @@ class TalkerCog:
         if 0 <= message.created_at.hour <= 5 and "goodnight" in re.sub(r'\s', '', clean_msg):
             return await message.channel.send(random.choice(self.responses['hello']['night']))
 
-        if bool(re.search(r"(are )|(r )(you )|(u )(single)\Z", clean_msg)):
+        if bool(re.search(r"\A(are )|(r )(you )|(u )(single)\Z", clean_msg)):
             return await  message.channel.send(random.choice(self.responses['single']))
 
         if bool(re.search(r"\b(?P<eye>[@oO0u^;.,x])(?P<mouth>[_w=~km3-])(?P=eye)\b", message.content)):
