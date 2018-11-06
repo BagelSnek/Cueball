@@ -18,9 +18,9 @@ class TalkerCog:
             return
 
         clean_msg = re.sub(r'[^a-z0-9\s]+', '', message.content.lower())
-        print(clean_msg)
 
-        if len(set(self.responses['hello']['prompts']).intersection(set(clean_msg.split(' ')))) > 0:
+        if len(list(filter(None, [prompt if prompt in ''.join(clean_msg.split(' ')) else
+                                  None for prompt in self.responses['hello']['prompts']]))) > 0:
             if message.author.id == 401139202487746562:
                 return await message.channel.send("Hi, thot.")
             return await message.channel.send(random.choice(self.responses['hello']['responses']))
