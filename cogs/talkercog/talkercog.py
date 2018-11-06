@@ -18,6 +18,7 @@ class TalkerCog:
             return
 
         clean_msg = re.sub(r'[^a-z0-9\s]+', '', message.content.lower())
+        print(clean_msg)
 
         if len(set(self.responses['hello']['prompts']).intersection(set(clean_msg.split(' ')))) > 0:
             if message.author.id == 401139202487746562:
@@ -30,10 +31,10 @@ class TalkerCog:
         if 0 <= message.created_at.hour <= 5 and "goodnight" in re.sub(r'\s', '', clean_msg):
             return await message.channel.send(random.choice(self.responses['hello']['night']))
 
-        if bool(re.search(r"\A(are )|(r )(you )|(u )(single)\Z", clean_msg)):
+        if bool(re.search(r"\A((are )|(r ))+((you )|(u ))+(single)+\Z", clean_msg)):
             return await  message.channel.send(random.choice(self.responses['single']))
 
-        if bool(re.search(r"\b(?P<eye>[@oO0u^;.,x])(?P<mouth>[_w=~km3-])(?P=eye)\b", message.content)):
+        if bool(re.search(r"\b(?P<eye>[@oO0u^;.,x])(?P<mouth>[_w=~m3-])(?P=eye)\b", message.content)):
             return await message.channel.send("{0}{1}{0}".format(random.choice(self.responses['owo']['eye']),
                                                                  random.choice(self.responses['owo']['mouth'])))
 
