@@ -1,7 +1,7 @@
 import os
 import datetime
 import discord
-import asyncio
+import aiocron
 
 
 class CostumeCog(discord.Client):
@@ -11,19 +11,18 @@ class CostumeCog(discord.Client):
         super().__init__(*args, **kwargs)
         self.bot = bot
         self.bg_task = self.loop.create_task(self.check_costume())
+        self._update_cron = aiocron.crontab('* 0 * * *', func = self.check_costume, start = True)
 
     async def check_costume(self):
         await self.bot.wait_until_ready()
-        while not self.bot.is_closed():
-            picture = open('cogs/costumecog/standard.png', 'rb')
-            for file in [f.strip('.png').split('-') for f in os.listdir('cogs/costumecog/costumes/')
-                         if os.path.isfile(os.path.join('cogs/costumecog/costumes/', f))]:
-                if int(file[0]) <= int(datetime.date.today().strftime("%m%d")) <= int(file[2]):
-                    picture = open(f'cogs/costumecog/costumes/{"-".join(file)}.png', 'rb')
+        picture = open('cogs/costumecog/standard.png', 'rb')
+        for file in [f.strip('.png').split('-') for f in os.listdir('cogs/costumecog/costumes/')
+                     if os.path.isfile(os.path.join('cogs/costumecog/costumes/', f))]:
+            if int(file[0]) <= int(datetime.date.today().strftime("%m%d")) <= int(file[2]):
+                picture = open(f'cogs/costumecog/costumes/{"-".join(file)}.png', 'rb')
 
-            await self.bot.user.edit(avatar = picture.read())
-            print("Costume checked.")
-            await asyncio.sleep(datetime.timedelta(days = .5).seconds)
+        await self.bot.user.edit(avatar = picture.read())
+        print("Costume checked.")
 
 
 def setup(bot):
