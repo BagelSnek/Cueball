@@ -28,11 +28,11 @@ class ContestCog(discord.Client):
     # Alloy only one vote, remove new vote if one is already present.
     async def on_raw_reaction_add(self, emoji, message_id, channel_id, user_id):
         channel = self.bot.get_channel(channel_id)
-        if channel.name != "weekly-contest" or self.bot.get_user(user_id).bot:
+        if channel.name != "weekly-contest" or self.bot.get_user(user_id).bot or emoji != self.bot.get_emoji(509383247772385311):
             return
 
         if [member.id for member in list(filter(None, reduce(lambda x, y: x + y,  [await react.users().flatten()
-           if react.emoji.id == 509383247772385311 else None for react in reduce(lambda x, y: x + y,
+           if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
            [message.reactions for message in await channel.history().flatten()])])))].count(user_id) > 1:
 
             message = await channel.get_message(message_id).remove_reaction(emoji, self.bot.get_user(user_id))
