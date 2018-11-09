@@ -17,7 +17,7 @@ class TalkerCog:
 
         # Personalized responses for members in personalized.json.
         if not os.path.isfile('cogs/talkercog/personalized.json'):
-            self.personalized = {"members": {}}
+            self.personalized = {}
         else:
             with open('cogs/talkercog/personalized.json') as personalizedJSON:
                 self.personalized = json.load(personalizedJSON)

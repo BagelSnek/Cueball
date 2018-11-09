@@ -20,7 +20,7 @@ else:
     print("Settings successfully loaded.")
 
 bot = Bot(command_prefix = bot_settings['prefix'], case_insensitive = True,
-          game = discord.Game(name = bot_settings['currActivity']))
+          activity = discord.Game(name = bot_settings['currActivity']))
 
 
 def check_authorized():
