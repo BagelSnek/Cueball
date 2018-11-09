@@ -31,14 +31,14 @@ class ContestCog(discord.Client):
     # Alloy only one vote, remove new vote if one is already present.
     async def on_raw_reaction_add(self, payload):
         channel = self.bot.get_channel(payload.channel_id)
-        if channel.name != "weekly-contest" or self.bot.get_user(payload.user_id).bot or payload.emoji != self.bot.get_emoji(509383247772385311):
+        if channel.name != "weekly-contest":
             return
 
         if [member.id for member in list(filter(None, reduce(lambda x, y: x + y,  [await react.users().flatten()
            if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
            [message.reactions for message in await channel.history().flatten()])])))].count(payload.user_id) > 1:
 
-            message = await channel.get_message(payload.message_id).remove_reaction(payload.emoji, self.bot.get_user(payload.user_id))
+            message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, self.bot.get_user(payload.user_id))
 
     # Allow only one submition for competion and delete submition is one is present.
