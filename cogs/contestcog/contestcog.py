@@ -59,7 +59,9 @@ class ContestCog(discord.Client):
 
         # Log contest and send message in channels marked as contest channels.
         if datetime.datetime.today().weekday() == 4:
-            self.contests['challenges'].remove(self.contest_history['contests'][-1]['challenge'])
+            if self.contest_history['contests'] != {}:
+                self.contests['challenges'].remove(self.contest_history['contests'][-1]['challenge'])
+
             contest = {"date": datetime.date.today().strftime('%y/%m/%d'),
                        "challenge": random.choice(self.contests['challenges'])}
             self.contest_history['contests'].append(contest)
