@@ -34,11 +34,11 @@ class TalkerCog:
         responses = self.responses
 
         # Personalized response checker.
-        if str(message.author.id) in list(self.personalized.keys()):
+        if str(message.author.id) in self.personalized:
             if "ignored" in list(self.personalized[str(message.author.id)].keys()):
                 return
 
-            for key in list(self.personalized[str(message.author.id)].keys()):
+            for key in self.personalized[str(message.author.id)]:
                 if type(responses[key]) == dict and key in responses:
                     responses[key].update(self.personalized[str(message.author.id)][key])
                 else:
@@ -58,7 +58,7 @@ class TalkerCog:
         elif bool(re.search(r"\A((are )|(r ))+((you )|(u ))+(single)+\Z", clean_msg)):
             response = random.choice(responses['single'])
 
-        elif bool(re.search(r"(?P<eye>[@o0u^;.,x])[_w=~m3-](?P=eye)", message.content.lower())):
+        elif bool(re.search(r"(?P<eye>[@o0u^;.,x])[_w=~3-](?P=eye)", message.content.lower())):
             response = "{0}{1}{0}".format(random.choice(responses['owo']['eye']),
                                           random.choice(responses['owo']['mouth']))
 
