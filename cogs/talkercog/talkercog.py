@@ -34,15 +34,15 @@ class TalkerCog:
         responses = self.responses
 
         # Personalized response checker.
-        if str(message.author.id) in list(self.personalized['members'].keys()):
-            if "ignored" in list(self.personalized['members'][str(message.author.id)].keys()):
+        if str(message.author.id) in list(self.personalized.keys()):
+            if "ignored" in list(self.personalized[str(message.author.id)].keys()):
                 return
 
-            for key in list(self.personalized['members'][str(message.author.id)].keys()):
+            for key in list(self.personalized[str(message.author.id)].keys()):
                 if type(responses[key]) == dict and key in responses:
-                    responses[key].update(self.personalized['members'][str(message.author.id)][key])
+                    responses[key].update(self.personalized[str(message.author.id)][key])
                 else:
-                    responses[key] = self.personalized['members'][str(message.author.id)][key]
+                    responses[key] = self.personalized[str(message.author.id)][key]
 
         # Standard responses.
         if len(set(self.responses['hello']['prompts']).intersection(

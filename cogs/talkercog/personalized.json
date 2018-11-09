@@ -1,78 +1,78 @@
 {
-  "members": {
-    "401139202487746562": {
-      "hello": {
-        "responses": [
-          "Hi, thot.",
-          "Oh, you again."
-        ],
-        "morning": [
-          "Crap, she's awake."
-        ],
-        "night": [
-          "Yeah, night."
-        ]
-      },
+  "401139202487746562": {
+    "hello": {
+      "responses": [
+        "Hi, thot.",
+        "Oh, you again."
+      ],
+      "morning": [
+        "Crap, she's awake."
+      ],
+      "night": [
+        "Yeah, night."
+      ]
+    },
+    "bye": [
+      "Finally.",
+      "Good, she's leaving."
+    ]
+  },
 
-      "bye": [
-        "Finally.",
-        "Good, she's leaving."
+  "222092844628705280": {
+    "hello": {
+      "responses": [
+        "Hey there, handsome.",
+        "Hi, Grant!"
+      ],
+      "morning": [
+        "Good morning, sunshine!",
+        "Sleep well, sugar?"
+      ],
+      "night": [
+        "Sleep well, babe! :heart:"
       ]
     },
 
-    "222092844628705280": {
-      "hello": {
-        "responses": [
-          "Hey there, handsome.",
-          "Hi, Grant!"
-        ],
-        "morning": [
-          "Good morning, sunshine!",
-          "Sleep well, sugar?"
-        ],
-        "night": [
-          "Sleep well, babe! :heart:"
-        ]
-      },
+    "bye": [
+      "*I'll miss you!* ;-;"
+    ]
+  },
 
-      "bye": [
-        "*I'll miss you!* ;-;"
+  "477803878805667840": {
+    "ignored": ""
+  },
+
+  "506158894045855784": {
+    "ignored": ""
+  },
+
+  "279092204771868672": {
+    "hello": {
+      "responses": [
+        "Greetings, Xaereus.",
+        "Shit, I should've worn orange.",
+        "Who let this school shooter in?",
+        "Edgy hacker inbound."
       ]
-    },
+    }
+  },
 
-    "477803878805667840": {
-      "ignored": ""
-    },
+  "392172434402443264": {
+    "hello": {
+      "responses": [
+        "Greetings, farmerman.",
+        "Oh look, a redneck!",
+        "Hey, guess you took a break from french kissing a V10.",
+        "So ***this*** is the owner of the Instagram account I've heard so much about. Interesting."
+      ]
+    }
+  },
 
-    "506158894045855784": {
-      "ignored": ""
-    },
-
-    "279092204771868672": {
-      "hello": {
-        "responses": [
-          "Greetings, Xaereus.",
-          "Shit, I should've worn orange.",
-          "Who let this school shooter in?",
-          "Edgy hacker inbound."
-        ]
-      }
-    },
-
-    "392172434402443264": {
-      "hello": {
-        "responses": [
-          "Greetings, farmerman."
-        ]
-      }
-    },
-
-    "219581824224067584": {
-      "hello": {
-        "responses": [
-          "Greetings, Noah."
-        ]
-      }
+  "219581824224067584": {
+    "hello": {
+      "responses": [
+        "Greetings, Noah."
+      ]
     }
   }
 }
