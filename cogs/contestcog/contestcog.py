@@ -12,7 +12,7 @@ class ContestCog(discord.Client):
         super().__init__(*args, **kwargs)
         self.bot = bot
         self.bg_task = self.loop.create_task(self.contest())
-        self._update_cron = aiocron.crontab('* 0 * * *', func = self.contest, start = True)
+        self._update_cron = aiocron.crontab('1 0 * * *', func = self.contest, start = True)
 
         if not os.path.isfile('cogs/contestcog/contesthistory.json'):
             json.dump({"contests": []}, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
