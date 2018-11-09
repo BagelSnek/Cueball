@@ -16,16 +16,19 @@ class HelperCog:
 
         embed = discord.Embed(title = "Command: help", color = 0xFFFFFF)
         if query is not None:
-            if self.bot.get_command(query) is None:
-                embed.color = 0xFF0000
-                embed.description = "The command you\'re looking for was not found. " \
-                                    f"Use `{self.bot.command_prefix}help` to get a list of availible commands."
+            if self.bot.get_cog(query) is None:
+                if self.bot.get_command(query) is None:
+                    embed.color = 0xFF0000
+                    embed.description = "The command you\'re looking for was not found. " \
+                                        f"Use `{self.bot.command_prefix}help` to get a list of availible commands."
+                else:
+                    embed.description = f"{self.bot.get_command(query).name} : " \
+                                        f"{str(self.bot.get_command(query).callback.__doc__)}"
+                    if len(self.bot.get_command(query).aliases) > 0:
+                        embed.add_field(name = "Aliases", inline = False,
+                                        value = "\n".join(self.bot.get_command(query).aliases))
             else:
-                embed.description = f"{self.bot.get_command(query).name} : " \
-                                    f"{str(self.bot.get_command(query).callback.__doc__)}"
-                if len(self.bot.get_command(query).aliases) > 0:
-                    embed.add_field(name = "Aliases", inline = False,
-                                    value = "\n".join(self.bot.get_command(query).aliases))
+                embed.description = self.bot.get_cog(query).__doc__
         else:
             embed.description = str(self.bot.get_command('help').callback.__doc__).format(self.bot.command_prefix)
             cogs = list(set([command.cog_name for command in self.bot.commands]))
