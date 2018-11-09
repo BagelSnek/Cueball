@@ -1,0 +1,58 @@
+{
+  "members": {
+    "401139202487746562": {
+      "hello": {
+        "responses": [
+          "Hi, thot.",
+          "Oh, you again."
+        ],
+        "morning": [
+          "Crap, she's awake."
+        ],
+        "night": [
+          "Yeah, night."
+        ]
+      },
+
+      "bye": [
+        "Finally."
+      ]
+    },
+
+    "222092844628705280": {
+      "hello": {
+        "responses": [
+          "Hey there, handsome.",
+          "Hi, Grant!"
+        ],
+        "morning": [
+          "Good morning, sunshine!",
+          "Sleep well, sugar?"
+        ],
+        "night": [
+          "Sleep well, babe. :heart:"
+        ]
+      },
+
+      "bye": [
+        "*I'll miss you!* ;-;"
+      ]
+    },
+
+    "477803878805667840": {
+      "ignored": ""
+    },
+
+    "506158894045855784": {
+      "ignored": ""
+    },
+
+    "279092204771868672": {
+      "hello": {
+        "responses": [
+          "Testing."
+        ]
+      }
+    }
+  }
+}

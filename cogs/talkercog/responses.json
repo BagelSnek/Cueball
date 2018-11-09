@@ -74,7 +74,8 @@
       "howdy",
       "whatspoppin",
       "salutations",
-      "wassup"
+      "wassup",
+      "wazzup"
     ],
     "responses": [
       "Wassup?",
@@ -92,7 +93,7 @@
       "Hail, adventurer!",
       "`<Jumps behind General Grievous>` *Hello there!*",
       "Welcome to my domain.",
-      "Somebody ring the Dinkster?"
+      "Somebody ring the ***Dinkster***?"
     ],
     "morning": [
       "Goodmorning!",
@@ -115,12 +116,13 @@
     "Fine, I see how it is.",
     "This is an **A** to **B** server, so you can **C** yourself out.",
     "Leave my domain, peasant.",
-    "May ye find greener grass elsewhere."
+    "May ye find greener grass elsewhere.",
+    "Live long and prosper."
   ],
 
   "owo": {
     "eye": "@oO0u^;.,x",
-    "mouth": "_-w=~km3"
+    "mouth": "_-wW=~m3"
   },
 
   "triggered": [
@@ -169,5 +171,9 @@
     "You called?",
     "I have been summoned.",
     "Have you come to kill me?"
+  ],
+
+  "crush": [
+    "*They said Connor-senpai's name!* :hearts:"
   ]
 }

@@ -11,7 +11,7 @@ from discord.ext import commands
 # Load bot settings
 if not os.path.isfile('botSettings.json'):
     # Creates file with default settings
-    bot_settings = {"prefix": "??", "currGame": "", "initial_extensions": [], "auth_users": []}
+    bot_settings = {"prefix": "??", "currActivity": "", "initial_extensions": [], "auth_users": []}
     json.dump(bot_settings, open('botSettings.json', 'w'), indent = 2)
 else:
     with open('botSettings.json') as botSettings:
@@ -20,7 +20,7 @@ else:
     print("Settings successfully loaded.")
 
 bot = Bot(command_prefix = bot_settings['prefix'], case_insensitive = True,
-          game = discord.Game(name = bot_settings['currGame']))
+          game = discord.Game(name = bot_settings['currActivity']))
 
 
 def check_authorized():
@@ -41,7 +41,7 @@ def update_botsettings(key, value):
 async def on_ready():
     """Where we droppin', boys?"""
     print(f"{time.ctime()} :: Booted as {bot.user.name} (ID - {bot.user.id})")
-    print(f"Playing game: {bot_settings['currGame']}\n")
+    print(f"Playing game: {bot_settings['currActivity']}\n")
     print("Connected guilds:")
     for guild in bot.guilds:
         print(f"\tID - {guild.id} : Name - {guild.name}")
@@ -97,13 +97,13 @@ async def list_roles(ctx):
                                                                                for role in ctx.message.guild.roles]))))
 
 
-@bot.command(name = "changeGame", aliases = ["gameChange", "changePlaying"])
+@bot.command(name = "changeGame", aliases = ["gameChange", "changePlaying", "changeActivity"])
 @check_authorized()
 async def change_game(ctx, *game):
     """Changes what the bot is playing."""
-    update_botsettings('currGame', ' '.join(game))
-    await bot.change_presence(game = discord.Game(name = ' '.join(game)))
-    await ctx.send(embed = discord.Embed(title = "Command: changeGame", color = 0x0000FF,
+    update_botsettings('currActivity', ' '.join(game))
+    await bot.change_presence(activity = discord.Game(name = ' '.join(game)))
+    await ctx.send(embed = discord.Embed(title = "Command: changeActivity", color = 0x0000FF,
                                          description = f"Game was changed to {' '.join(game)}"))
 
 
