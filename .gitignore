@@ -5,4 +5,5 @@ botSettings.json
 *.idea
 *.pyc
 cogs/contestcog/contesthistory.json
-cogs/__pycache__/
+*.cpython-36
+*__pycache__/
