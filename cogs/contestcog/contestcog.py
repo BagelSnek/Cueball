@@ -17,6 +17,7 @@ class ContestCog(discord.Client):
         self._update_cron = aiocron.crontab('1 0 * * 4,6', func = self.contest, start = True)
 
         if not os.path.isfile('cogs/contestcog/contesthistory.json'):
+            print("Making contesthistory.json.")
             json.dump({"contests": []}, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
         else:
             with open('cogs/contestcog/contesthistory.json', 'r') as contest_history:
@@ -59,6 +60,7 @@ class ContestCog(discord.Client):
 
         # Log contest and send message in channels marked as contest channels.
         if datetime.datetime.today().weekday() == 4:
+            print("Starting new contest.")
             if self.contest_history['contests'] != {}:
                 self.contests['challenges'].remove(self.contest_history['contests'][-1]['challenge'])
 
@@ -76,6 +78,7 @@ class ContestCog(discord.Client):
 
         # Tally up contest results and announce winner.
         elif datetime.datetime.today().weekday() == 6:
+            print("Ending previous contest.")
             for channel in channels:
                 tally = {}
                 for message in await channel.history().flatten():
@@ -95,6 +98,7 @@ class ContestCog(discord.Client):
 
                 await channel.delete_messages(await channel.history(limit = None).flatten())
                 await channel.send(response)
+
         print("Contest checked.")
 
 
