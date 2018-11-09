@@ -70,11 +70,15 @@ class ContestCog(discord.Client):
             json.dump(self.contest_history, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
 
             for channel in channels:
-                await channel.delete_messages(await channel.history(limit = None).flatten())
-                await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
-                                   f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
-                                   f"votes before Sunday wins!\n"
-                                   "Post only once, I don't want to have to delete messages. Same goes for votes.")
+                chanhist = await channel.history(limit = None, reverse = True).flatten()
+                if chanhist:
+                    if chanhist[0].created_at.day != datetime.datetime.today().day:
+                        await channel.delete_messages(chanhist)
+                else:
+                    await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
+                                       f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
+                                       f"votes before Sunday wins!\n"
+                                       "Post only once, I don't want to have to delete messages. Same goes for votes.")
 
         # Tally up contest results and announce winner.
         elif datetime.datetime.today().weekday() == 6:
