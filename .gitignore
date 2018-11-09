@@ -4,5 +4,5 @@ token.txt
 botSettings.json
 *.idea
 *.pyc
-*.cpython-36.pyc
 cogs/contestcog/contesthistory.json
+cogs/__pycache__/
