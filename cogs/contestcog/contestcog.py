@@ -93,6 +93,7 @@ class ContestCog(discord.Client):
 
                 await channel.delete_messages(await channel.history(limit = None).flatten())
                 await channel.send(response)
+        print("Contest checked.")
 
 
 def setup(bot):
