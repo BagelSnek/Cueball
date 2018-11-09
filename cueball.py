@@ -5,7 +5,6 @@ import platform
 import time
 import json
 import discord
-from discord.ext.commands import Bot
 from discord.ext import commands
 
 # Load bot settings
@@ -19,8 +18,8 @@ else:
     botSettings.close()
     print("Settings successfully loaded.")
 
-bot = Bot(command_prefix = bot_settings['prefix'], case_insensitive = True,
-          activity = discord.Game(name = bot_settings['currActivity']))
+bot = commands.Bot(command_prefix = bot_settings['prefix'], case_insensitive = True,
+                   activity = discord.Game(name = bot_settings['currActivity']))
 
 
 def check_authorized():
@@ -193,6 +192,7 @@ if __name__ == '__main__':
     with open('token.txt', 'r') as tokentxt:
         token = tokentxt.read()
     tokentxt.close()
+
     if "win" not in str(platform.platform()).lower():
         token = token[:-1]
     bot.run(token, reconnect = True)

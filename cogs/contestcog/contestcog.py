@@ -8,11 +8,13 @@ import aiocron
 
 
 class ContestCog(discord.Client):
+    """ContestCog is a cog that manages a weekly contest in any channel named 'weekly-contest'."""
+
     def __init__(self, bot, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.bot = bot
         self.bg_task = self.loop.create_task(self.contest())
-        self._update_cron = aiocron.crontab('1 0 * * *', func = self.contest, start = True)
+        self._update_cron = aiocron.crontab('1 0 * * 4,6', func = self.contest, start = True)
 
         if not os.path.isfile('cogs/contestcog/contesthistory.json'):
             json.dump({"contests": []}, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
@@ -52,11 +54,8 @@ class ContestCog(discord.Client):
         await self.bot.wait_until_ready()
 
         # Assemble channel list for contests and stop method if the weekday isn't 4 or 6.
-        if datetime.datetime.today().weekday() == 4 or datetime.datetime.today().weekday() == 6:
-            channels = list(filter(None, [channel if "weekly-contest" in channel.name
-                                          else None for channel in self.bot.get_all_channels()]))
-        else:
-            return
+        channels = list(filter(None, [channel if "weekly-contest" in channel.name
+                                      else None for channel in self.bot.get_all_channels()]))
 
         # Log contest and send message in channels marked as contest channels.
         if datetime.datetime.today().weekday() == 4:

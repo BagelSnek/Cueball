@@ -5,7 +5,7 @@ import os
 
 
 class TalkerCog:
-    """TalkerCog is a cog that talks back. Sass included."""
+    """TalkerCog is a cog that talks back. Sass included, batteries not included."""
 
     def __init__(self, bot):
         self.bot = bot
