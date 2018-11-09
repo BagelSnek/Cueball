@@ -39,11 +39,8 @@ class TalkerCog:
                 return
 
             for key in list(self.personalized['members'][str(message.author.id)].keys()):
-                if key in responses:
-                    print()
-                    print(type(responses[key]))
-                    print(responses[key])
-                    (responses[key]).update(self.personalized['members'][str(message.author.id)][key])
+                if type(responses[key]) == dict and key in responses:
+                    responses[key].update(self.personalized['members'][str(message.author.id)][key])
                 else:
                     responses[key] = self.personalized['members'][str(message.author.id)][key]
 

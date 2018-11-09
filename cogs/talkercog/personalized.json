@@ -15,7 +15,8 @@
       },
 
       "bye": [
-        "Finally."
+        "Finally.",
+        "Good, she's leaving."
       ]
     },
 
@@ -30,7 +31,7 @@
           "Sleep well, sugar?"
         ],
         "night": [
-          "Sleep well, babe. :heart:"
+          "Sleep well, babe! :heart:"
         ]
       },
 
@@ -50,7 +51,26 @@
     "279092204771868672": {
       "hello": {
         "responses": [
-          "Testing."
+          "Greetings, Xaereus.",
+          "Shit, I should've worn orange.",
+          "Who let this school shooter in?",
+          "Edgy hacker inbound."
+        ]
+      }
+    },
+
+    "392172434402443264": {
+      "hello": {
+        "responses": [
+          "Greetings, farmerman."
+        ]
+      }
+    },
+
+    "219581824224067584": {
+      "hello": {
+        "responses": [
+          "Greetings, Noah."
         ]
       }
     }
