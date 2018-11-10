@@ -36,7 +36,8 @@ class ContestCog(discord.Client):
 
         if [member.id for member in list(filter(None, reduce(lambda x, y: x + y,  [await react.users().flatten()
            if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
-           [message.reactions for message in await channel.history().flatten()])])))].count(payload.user_id) > 1:
+           [message.reactions for message in await channel.history().flatten()])])))].count(payload.user_id) > 1 or \
+                await channel.get_message(payload.message_id).author.id == payload.user_id:
 
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, self.bot.get_user(payload.user_id))
@@ -78,7 +79,8 @@ class ContestCog(discord.Client):
                     await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
                                        f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
                                        f"votes before Sunday wins!\n"
-                                       "Post only once, I don't want to have to delete messages. Same goes for votes.")
+                                       "Post only once, I don't wanna have to delete messages. Same goes for votes.\n"
+                                       "Don't vote for yourself, by the way.")
 
         # Tally up contest results and announce winner.
         elif datetime.datetime.today().weekday() == 6:
