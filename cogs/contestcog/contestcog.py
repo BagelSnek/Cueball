@@ -36,8 +36,7 @@ class ContestCog(discord.Client):
 
         if [member.id for member in list(filter(None, reduce(lambda x, y: x + y,  [await react.users().flatten()
            if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
-           [message.reactions for message in await channel.history().flatten()])])))].count(payload.user_id) > 1 or \
-                await channel.get_message(payload.message_id).author.id == payload.user_id:
+           [message.reactions for message in await channel.history().flatten()])])))].count(payload.user_id) > 1:
 
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, self.bot.get_user(payload.user_id))
