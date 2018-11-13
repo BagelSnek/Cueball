@@ -132,7 +132,7 @@ class ContestCog(discord.Client):
                 previous_contest != datetime.datetime.today().strftime('%y/%m/%d'):
             await self.start_contest(channels)
         # Sunday's code
-        elif datetime.datetime.today().weekday() == 1 and self.is_active_contest and \
+        elif datetime.datetime.today().weekday() == 6 and self.is_active_contest and \
                 previous_contest == (datetime.datetime.today() - datetime.timedelta(days = 2)).strftime('%y/%m/%d'):
             await self.end_contest(channels)
 
