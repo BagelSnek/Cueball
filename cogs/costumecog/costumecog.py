@@ -1,3 +1,4 @@
+import asyncio
 import os
 import datetime
 import discord
@@ -15,6 +16,7 @@ class CostumeCog(discord.Client):
 
     async def check_costume(self):
         await self.bot.wait_until_ready()
+        await asyncio.sleep(3)
         picture = open('cogs/costumecog/standard.png', 'rb')
         for file in [f.strip('.png').split('-') for f in os.listdir('cogs/costumecog/costumes/')
                      if os.path.isfile(os.path.join('cogs/costumecog/costumes/', f))]:

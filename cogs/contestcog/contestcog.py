@@ -37,10 +37,18 @@ class ContestCog(discord.Client):
         if channel.name != "weekly-contest" or self.bot.get_user(payload.user_id) == self.bot.user:
             return
 
-        # Delete reaction if the user has voted in that channel before or is a bot other than Cueball.
-        if [member.id for member in list(filter(None, reduce(lambda x, y: x + y,  [await react.users().flatten()
+        if payload.emoji.id != 509383247772385311 or user.bot:
+            message = await channel.get_message(payload.message_id)
+            await message.remove_reaction(payload.emoji, user)
+
+        print([member.id for member in reduce(lambda x, y: x + y,  list(filter(None, [await react.users().flatten()
            if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
-           [message.reactions for message in await channel.history().flatten()])])))].count(user.id) > 1 or user.bot:
+           [message.reactions for message in await channel.history().flatten()])])))].count(user.id))
+
+        # Delete reaction if the user has voted in that channel before or is a bot other than Cueball.
+        if [member.id for member in reduce(lambda x, y: x + y,  list(filter(None, [await react.users().flatten()
+           if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
+           [message.reactions for message in await channel.history().flatten()])])))].count(user.id) > 1:
 
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, user)
@@ -118,7 +126,7 @@ class ContestCog(discord.Client):
     async def contest(self):
         """Runs contests."""
         await self.bot.wait_until_ready()
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
 
         print("Checking contest...")
 
