@@ -35,7 +35,7 @@ class TalkerCog:
 
         # Personalized response checker.
         if str(message.author.id) in self.personalized:
-            if "ignored" in list(self.personalized[str(message.author.id)].keys()):
+            if "ignored" in self.personalized[str(message.author.id)]:
                 return
 
             for key in self.personalized[str(message.author.id)]:

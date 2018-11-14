@@ -6,6 +6,7 @@ import json
 from functools import reduce
 import aiocron
 import asyncio
+from discord.ext import commands
 
 
 class ContestCog(discord.Client):
@@ -16,6 +17,7 @@ class ContestCog(discord.Client):
         self.bot = bot
         self.bg_task = self.loop.create_task(self.contest())
         self._update_cron = aiocron.crontab('1 0 * * *', func = self.contest, start = True)
+        # For suspending contest protocall while contest is inactive.
         self.is_active_contest = False
 
         if not os.path.isfile('cogs/contestcog/contesthistory.json'):
@@ -37,7 +39,7 @@ class ContestCog(discord.Client):
         if channel.name != "weekly-contest" or self.bot.get_user(payload.user_id) == self.bot.user:
             return
 
-        if payload.emoji.id != 509383247772385311 or user.bot:
+        if payload.emoji.id != 509383247772385311 or user.bot or not self.is_active_contest:
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, user)
 
@@ -66,23 +68,34 @@ class ContestCog(discord.Client):
 
         print("\tStarting new contest...")
 
-        if self.contest_history['contests']:
-            self.contests['challenges'].remove(self.contest_history['contests'][-1]['challenge'])
+        # Makes sure that contests are not repeated within a 2 week timespan.
+        if len(self.contest_history['contests']) > 1:
+            challenges = list(set(self.contests['challenges']) -
+                              {x['challenge'] for x in self.contest_history['contests'][-2:]})
+        else:
+            challenges = self.contests['challenges']
 
+        # Defines and logs contest.
         contest = {"date": datetime.date.today().strftime('%y/%m/%d'),
-                   "challenge": random.choice(self.contests['challenges'])}
+                   "challenge": random.choice(challenges)}
         self.contest_history['contests'].append(contest)
         json.dump(self.contest_history, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
 
         for channel in channels:
-            chanhist = await channel.history(limit = None, reverse = True).flatten()
-            if chanhist:
-                await channel.delete_messages(chanhist)
-            await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
-                               f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
-                               f"votes before Sunday wins!\n"
-                               "Post only once, I don't wanna have to delete messages. Same goes for votes.\n"
-                               "Don't vote for yourself, by the way.")
+            print(f"\t\tAttempting to start contest in {channel.guild.name}...")
+            try:
+                chanhist = await channel.history(limit = None, reverse = True).flatten()
+                if chanhist:
+                    await channel.delete_messages(chanhist)
+                await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
+                                   f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
+                                   f"votes before Sunday wins!\n"
+                                   "Post only once, I don't wanna have to delete messages. Same goes for votes.\n"
+                                   "Don't vote for yourself, by the way.")
+                print(f"\t\tContest successfully started in {channel.guild.name}.")
+            except commands.MissingPermissions as exc:
+                print(f"\t\tError when trying to start contest in {channel.guild.name}.\n"
+                      f"\t\t{type(exc).__name__} : {exc}")
 
         self.is_active_contest = True
         print("\tNew contest started.")
@@ -93,31 +106,41 @@ class ContestCog(discord.Client):
         print("\tEnding previous contest...")
 
         for channel in channels:
-            tally = {}
-            for message in await channel.history().flatten():
-                if not await channel.history().flatten():
-                    pass
-                elif not message.author.bot:
-                    tally[str(message.author.id)] = [react.count if react.emoji.id == 509383247772385311
-                                                     else 0 for react in message.reactions][0]
+            print(f"\t\tAttempting to end contest in {channel.guild.name}...")
+            try:
+                tally = {}
+                for message in await channel.history().flatten():
+                    if not await channel.history().flatten():
+                        pass
+                    elif not message.author.bot:
+                        tally[str(message.author.id)] = list(filter(None, [react.count if react.emoji.id == 509383247772385311
+                                                         else None for react in message.reactions]))[0]
 
-            # Tally up winners if there are any.
-            winners = [self.bot.get_user(int(key)).mention for key in tally if tally[key] == max(tally.values())] if tally else []
+                # Tally up winners if there are any.
+                winners = [self.bot.get_user(int(key)) for key in tally if tally[key] == max(tally.values())] if tally else []
 
-            if len(winners) == 0:
-                response = "No winners this week."
-            elif len(winners) > 1:
-                response = f"{', '.join(winners[:-1])} and {winners[-1]} won!"
-            else:
-                response = f"{winners[0]} won!"
+                if len(winners) == 0:
+                    response = "No winners this week."
+                elif len(winners) > 1:
+                    response = f"{', '.join([winner.mention for winner in winners[:-1]])}" \
+                               f" and {winners[-1].mention} won!"
+                else:
+                    response = f"{winners[0].mention} won!"
 
-            # Add code to send the submition for each user in response.
+                # Add code to send the submition for each winner in response.
+                if len(winners) != 0 and len(await channel.history().flatten()) != 0:
+                    for message in await channel.history().flatten():
+                        if message.author in winners:
+                            response += f"\n\n**{message.author.name}**\n```{message.content}```"
 
-            await channel.delete_messages(await channel.history(limit = None).flatten())
-            await channel.send(response)
+                await channel.delete_messages(await channel.history(limit = None).flatten())
+                await channel.send(response)
+            except commands.MissingPermissions as exc:
+                print(f"\t\tError when trying to end contest in {channel.guild.name}.\n"
+                      f"\t\t{type(exc).__name__} : {exc}")
 
-            self.is_active_contest = False
-            print("\tPrevious contest ended.")
+        self.is_active_contest = False
+        print("\tPrevious contest ended.")
 
     async def contest(self):
         """Runs contests."""
@@ -126,16 +149,16 @@ class ContestCog(discord.Client):
 
         print("Checking contest...")
 
-        # Assemble channel list for contests
+        # Assembles channel list for contests.
         channels = list(filter(None, [channel if "weekly-contest" in channel.name
                                       else None for channel in self.bot.get_all_channels()]))
         previous_contest = self.contest_history['contests'][-1]['date']
 
-        # Friday's code
+        # Friday's code.
         if datetime.datetime.today().weekday() == 4 and not self.is_active_contest and \
                 previous_contest != datetime.datetime.today().strftime('%y/%m/%d'):
             await self.start_contest(channels)
-        # Sunday's code
+        # Sunday's code.
         elif datetime.datetime.today().weekday() == 6 and self.is_active_contest and \
                 previous_contest == (datetime.datetime.today() - datetime.timedelta(days = 2)).strftime('%y/%m/%d'):
             await self.end_contest(channels)
