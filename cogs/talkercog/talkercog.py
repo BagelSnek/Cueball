@@ -28,7 +28,6 @@ class TalkerCog:
         if self.bot.command_prefix in message.content or message.author == self.bot.user:
             return
 
-        print(message.author)
         clean_msg = re.sub(r'[^a-z0-9\s]+', '', message.content.lower())
 
         response = None

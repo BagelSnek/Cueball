@@ -63,9 +63,14 @@
         "Greetings, farmerman.",
         "Oh look, a redneck!",
         "Hey, guess you took a break from french kissing a V10.",
-        "So ***this*** is the owner of the Instagram account I've heard so much about. Interesting."
+        "So ***this*** is the owner of the Instagram account I've heard so much about. Interesting.",
+        "Is this guy a school shooter or something?"
       ]
-    }
+    },
+
+    "bye": [
+      "***Go back to your cows, you atheist.***"
+    ]
   },
 
   "219581824224067584": {
@@ -74,5 +79,20 @@
         "Greetings, Noah."
       ]
     }
+  },
+
+  "353314882965471242": {
+    "hello": {
+      "responses": [
+        "Hey, mama Xi!",
+        "Hiiiiii!",
+        "Hey mom!"
+      ]
+    },
+
+    "bye": [
+      "Bye, mom!",
+      "I'll miss you lots."
+    ]
   }
 }
