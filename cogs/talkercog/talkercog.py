@@ -2,6 +2,7 @@ import json
 import random
 import re
 import os
+from copy import deepcopy
 
 
 class TalkerCog:
@@ -24,25 +25,28 @@ class TalkerCog:
             personalizedJSON.close()
 
     async def on_message(self, message):
-        if self.bot.command_prefix in message.content:
+        if self.bot.command_prefix in message.content or message.author == self.bot.user:
             return
 
+        print(message.author)
         clean_msg = re.sub(r'[^a-z0-9\s]+', '', message.content.lower())
 
         response = None
         delete_after = None
-        responses = self.responses
+
+        responses = deepcopy(self.responses)
+        personalized = deepcopy(self.personalized)
 
         # Personalized response checker.
         if str(message.author.id) in self.personalized:
-            if "ignored" in self.personalized[str(message.author.id)]:
+            if "ignored" in personalized[str(message.author.id)]:
                 return
 
-            for key in self.personalized[str(message.author.id)]:
+            for key in personalized[str(message.author.id)]:
                 if type(responses[key]) == dict and key in responses:
-                    responses[key].update(self.personalized[str(message.author.id)][key])
+                    responses[key].update(personalized[str(message.author.id)][key])
                 else:
-                    responses[key] = self.personalized[str(message.author.id)][key]
+                    responses[key] = personalized[str(message.author.id)][key]
 
         # Standard responses.
         if len(set(self.responses['hello']['prompts']).intersection(
