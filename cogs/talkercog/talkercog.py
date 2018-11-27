@@ -19,7 +19,7 @@ class TalkerCog:
     def check_response(message, responses):
         """Loops through the responses dict and returns the first valid response."""
         for resp in responses.values():
-            if utils.reg_searcher(message, resp['settings']['regex'],
+            if utils.reg_searcher(message.content, resp['settings']['regex'],
                                   clean = bool('clean' not in resp['settings'])):
 
                 # Setting the delete_after if it is in the dict
@@ -50,7 +50,7 @@ class TalkerCog:
 
             utils.merge(responses, personalized[str(message.author.id)])
 
-        response = self.check_response(message.content, responses)
+        response = self.check_response(message, responses)
 
         if response is not None:
             await message.channel.send(response['response'], delete_after = response['delete_after'])
