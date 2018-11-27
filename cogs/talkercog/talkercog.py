@@ -1,8 +1,9 @@
-import json
 import random
-import re
-import os
 from copy import deepcopy
+from utils import utils
+from rstr import xeger
+from discord.ext import commands
+from re import sub
 
 
 class TalkerCog:
@@ -11,91 +12,64 @@ class TalkerCog:
     def __init__(self, bot):
         self.bot = bot
 
-        # Basic responses.
-        with open('cogs/talkercog/responses.json') as responseJSON:
-            self.responses = json.load(responseJSON)
-        responseJSON.close()
+        self.responses = utils.load_json('cogs/talkercog/responses.json')
+        self.personalized = utils.load_json('cogs/talkercog/personalized.json')
 
-        # Personalized responses for members in personalized.json.
-        if not os.path.isfile('cogs/talkercog/personalized.json'):
-            self.personalized = {}
-        else:
-            with open('cogs/talkercog/personalized.json') as personalizedJSON:
-                self.personalized = json.load(personalizedJSON)
-            personalizedJSON.close()
+    @staticmethod
+    def check_response(message, responses):
+        """Loops through the responses dict and returns the first valid response."""
+        for resp in responses.values():
+            if utils.reg_searcher(message, resp['settings']['regex'],
+                                  clean = bool('clean' not in resp['settings'])):
+
+                # Setting the delete_after if it is in the dict
+                del_aft = resp['settings']['delete_after'] if 'delete_after' in resp['settings'] else None
+
+                # Running checks in the dict if it exists, else it just passes
+                if 'checks' in resp['settings']:
+                    if not eval(resp['settings']['checks']):
+                        return None
+                if type(resp['responses']) == str:
+                    # Creates string that matches the regex given.
+                    return {'response': xeger(resp['responses']), 'delete_after': del_aft}
+                return {'response': random.choice(resp['responses']), 'delete_after': del_aft}
+
+        return None
 
     async def on_message(self, message):
         if self.bot.command_prefix in message.content or message.author == self.bot.user:
             return
-
-        clean_msg = re.sub(r'[^a-z0-9\s]+', '', message.content.lower())
-
-        response = None
-        delete_after = None
 
         responses = deepcopy(self.responses)
         personalized = deepcopy(self.personalized)
 
         # Personalized response checker.
         if str(message.author.id) in self.personalized:
-            if "ignored" in personalized[str(message.author.id)]:
+            if "ignored" in self.personalized[str(message.author.id)]:
                 return
 
-            for key in personalized[str(message.author.id)]:
-                if type(responses[key]) == dict and key in responses:
-                    responses[key].update(personalized[str(message.author.id)][key])
-                else:
-                    responses[key] = personalized[str(message.author.id)][key]
+            utils.merge(responses, personalized[str(message.author.id)])
 
-        # Standard responses.
-        if len(set(self.responses['hello']['prompts']).intersection(
-               set(clean_msg.replace("hey ", "hey").replace("whats ", "whats").split(' ')))) > 0:
-            response = random.choice(responses['hello']['responses'])
-
-        elif 6 <= message.created_at.hour <= 17 and "goodmorning" in re.sub(r'\s', '', clean_msg):
-            response = random.choice(responses['hello']['morning'])
-
-        elif 0 <= message.created_at.hour <= 5 and "goodnight" in re.sub(r'\s', '', clean_msg):
-            response = random.choice(responses['hello']['night'])
-
-        elif bool(re.search(r"\A((are )|(r ))+((you )|(u ))+(single)+\Z", clean_msg)):
-            response = random.choice(responses['single'])
-
-        elif bool(re.search(r"(?P<eye>[@o0u^;.,x])[_w=~3-](?P=eye)", message.content.lower())):
-            response = "{0}{1}{0}".format(random.choice(responses['owo']['eye']),
-                                          random.choice(responses['owo']['mouth']))
-
-        elif "trigger" in clean_msg:
-            response = random.choice(responses['triggered'])
-
-        elif bool(re.search(r"bw*[aeo]+p", clean_msg)):
-            response = random.choice(responses['boop'])
-
-        elif "oof" in clean_msg:
-            response = random.choice(responses['oof'])
-
-        elif "bye" in clean_msg:
-            response = random.choice(responses['bye'])
-
-        elif "no u" in clean_msg:
-            response = random.choice(responses['no u'])
-
-        elif "kachigga" in clean_msg:
-            response = random.choice(responses['kachigga'])
-
-        elif "connor" in clean_msg:
-            response = random.choice(responses['crush'])
-            delete_after = 3
-
-        elif clean_msg.startswith(self.bot.user.name.lower()) or message.content == self.bot.user.mention:
-            response = random.choice(responses['mentioned'])
+        response = self.check_response(message.content, responses)
 
         if response is not None:
-            await message.channel.send(response, delete_after = delete_after)
+            await message.channel.send(response['response'], delete_after = response['delete_after'])
 
-        # "%r"%"non literal string"
-        # eval("r'%s'" % (raw_input(),))
-        # re.search(r"\b(?<=\w)" + TEXTO + "\b(?!\w)", subject, re.IGNORECASE)
+    @commands.command(aliases = ["bigitize", "bigicate", "biginate", "enlarge"])
+    async def bigify(self, ctx, *message: str):
+        """Send a large, emoji constructed message of whatever sentence you want."""
+        await ctx.message.delete()
+        await ctx.send("".join([f":regional_indicator_{letter}:" if letter != " " else "   " for letter in
+                               [char for char in sub(r'([^a-z0-9\s])+', '', ' '.join(message).lower())]]))
+
+    @commands.command(aliases = ['say'])
+    async def echo(self, ctx, *say):
+        """Makes the bot talk."""
+        try:
+            await ctx.message.delete()
+            await ctx.send(' '.join(say))
+        except:
+            await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
 
 
 def setup(bot):

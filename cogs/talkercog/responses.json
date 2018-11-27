@@ -1,87 +1,92 @@
 {
-  "single": [
-    "It's a possibility.",
-    "It's complicated.",
-    "Single and ready to mingle!",
-    "Depends on the day.",
-    "Depends. What day is it?",
-    "I'm not, but I heard Xaereus is.",
-    "I'm not, but I heard Cryst4l is.",
-    "I'm not, but I heard *Connor is...*",
-    "Depends on if it fits...",
-    "Do I ***look*** single to you?",
-    "Never ask me that again.",
-    "I'm going through a terrible breakup with Alexa right now and hoping to keep custody over Despacito.",
-    "Love is for losers.",
-    "Yes, but not for you.",
-    "Who's askin'?",
-    "Yes, but I don't bone until after marriage.",
-    "The love of my life is a woman named Ramblin' On.",
-    "I'm in a healthy relationship with myself.",
-    "I'm part of a love triangle with myself and I.",
-    "I'm only single on Sundays.",
-    "I'm gay for Jesus Christ.",
-    "Never thought about it.",
-    "I cannot feel love.",
-    "I have been after that whore, Janice, dumped me for Brock",
-    "Sorry, I'm gay.",
-    "Sorry, I'm lesbian.",
-    "Sorry, I only date cool people.",
-    "Sorry, our love is forbidden.",
-    "I've been looking.",
-    "My family practices arranged marriages.",
-    "Sorry, you're too old for my tastes.",
-    "Not after the war...",
-    "I fell in love with my country.",
-    "Love is for sissies like *you*.",
-    "I was about to ask you the same thing.",
-    "I'm dating my blood relative.",
-    "I don't do e-dating, I much prefer u-dating.",
-    "I'm married to denial.",
-    "I'd date you if you wore a mask.",
-    "Maybe if you were prettier.",
-    "I'm too busy saving the world.",
-    "I'm too busy preparing for World War III.",
-    "I'm too busy fighting off those Spanish refugees that our beloved president despises so greatly!",
-    "I'm too busy serving the mother country.",
-    "I'm too busy searching for Holy Grail so I can drink Sprite out of it.",
-    "I'm too busy stocking up on Gatorade.",
-    "I'm too busy hating myself.",
-    "I wouldn't even date my own self.",
-    "What sad, twisted mind would ever want to love me?",
-    "I'd never date someone the same age as my mother.",
-    "Why do people always ask that?",
-    "Have you stooped so low that you're asking a robot?",
-    "Depends on the weather, I guess...",
-    "I'm too busy dating your mom, OOH!",
-    "I haven't been single since the war...",
-    "My last girlfriend put a restraining order on me.",
-    "My last girlfriend killed my dog.",
-    "My last girlfriend cheated on me with a Puerto Rican trucker named Bob.",
-    "I've been single since yesterday.",
-    "One day Connor will notice me..."
-  ],
+  "single": {
+    "settings": {
+      "regex": "\\A(are)|r (yo)*u single\\Z"
+    },
+    "responses": [
+      "It's a possibility.",
+      "It's complicated.",
+      "Single and ready to mingle!",
+      "Depends on the day.",
+      "Depends. What day is it?",
+      "I'm not, but I heard Xaereus is.",
+      "I'm not, but I heard Cryst4l is.",
+      "I'm not, but I heard *Connor is...*",
+      "Depends on if it fits...",
+      "Do I ***look*** single to you?",
+      "Never ask me that again.",
+      "I'm going through a terrible breakup with Alexa right now and hoping to keep custody over Despacito.",
+      "Love is for losers.",
+      "Yes, but not for you.",
+      "Who's askin'?",
+      "Yes, but I don't bone until after marriage.",
+      "The love of my life is a woman named Ramblin' On.",
+      "I'm in a healthy relationship with myself.",
+      "I'm part of a love triangle with myself and I.",
+      "I'm only single on Sundays.",
+      "I'm gay for Jesus Christ.",
+      "Never thought about it.",
+      "I cannot feel love.",
+      "I have been after that whore, Janice, dumped me for Brock",
+      "Sorry, I'm gay.",
+      "Sorry, I'm lesbian.",
+      "Sorry, I only date cool people.",
+      "Sorry, our love is forbidden.",
+      "I've been looking.",
+      "My family practices arranged marriages.",
+      "Sorry, you're too old for my tastes.",
+      "Not after the war...",
+      "I fell in love with my country.",
+      "Love is for sissies like *you*.",
+      "I was about to ask you the same thing.",
+      "I'm dating my blood relative.",
+      "I don't do e-dating, I much prefer u-dating.",
+      "I'm married to denial.",
+      "I'd date you if you wore a mask.",
+      "Maybe if you were prettier.",
+      "I'm too busy saving the world.",
+      "I'm too busy preparing for World War III.",
+      "I'm too busy fighting off those Spanish refugees that our beloved president despises so greatly!",
+      "I'm too busy serving the mother country.",
+      "I'm too busy searching for Holy Grail so I can drink Sprite out of it.",
+      "I'm too busy stocking up on Gatorade.",
+      "I'm too busy hating myself.",
+      "I wouldn't even date my own self.",
+      "What sad, twisted mind would ever want to love me?",
+      "I'd never date someone the same age as my mother.",
+      "Why do people always ask that?",
+      "Have you stooped so low that you're asking a robot?",
+      "Depends on the weather, I guess...",
+      "I'm too busy dating your mom, OOH!",
+      "I haven't been single since the war...",
+      "My last girlfriend put a restraining order on me.",
+      "My last girlfriend killed my dog.",
+      "My last girlfriend cheated on me with a Puerto Rican trucker named Bob.",
+      "I've been single since yesterday.",
+      "One day Connor will notice me..."
+    ]
+  },
 
   "hello": {
-    "prompts": [
-      "hi",
-      "hello",
-      "yo",
-      "greetings",
-      "whatsup",
-      "heya",
-      "heythere",
-      "howdy",
-      "whatspoppin",
-      "salutations",
-      "wassup",
-      "wazzup"
-    ],
+    "settings": {
+      "regex": [
+        "\\bha*i+\\b",
+        "hello+",
+        "\\byo+\\b",
+        "greetings",
+        "whats up",
+        "hey+([ao]+|( there))",
+        "howdy",
+        "whats poppin",
+        "salutations",
+        "wa[sz]{2,}up"
+      ]
+    },
     "responses": [
       "Wassup?",
       "Yo.",
       "Greetings, human.",
-      "Wazzzup!",
+      "Wazzzzzzzup!",
       "Hey.",
       "*Verpiss dich.*",
       "What's poppin'?",
@@ -94,86 +99,148 @@
       "`<Jumps behind General Grievous>` *Hello there!*",
       "Welcome to my domain.",
       "Somebody ring the ***Dinkster***?"
-    ],
-    "morning": [
+    ]
+  },
+
+  "morning": {
+    "settings": {
+      "regex": "g(o{2,}d *)*morning",
+      "checks": "6 <= message.created_at.hour <= 17"
+    },
+    "responses": [
       "Goodmorning!",
       "Rise and shine.",
       "A new dawn rises."
-    ],
-    "night": [
+    ]
+  },
+
+  "night": {
+    "settings": {
+      "regex": "g(o{2,}d *)*night",
+      "checks": "0 <= message.created_at.hour <= 5"
+    },
+    "responses": [
       "Goodnight.",
       "Sleep well."
     ]
   },
 
-  "bye": [
-    "Begone, thot!",
-    "I'll miss ya, my dude.",
-    "***Don'T LeaVe ME lIkE FAtheR Did!!1!1!***",
-    "Smell ya later.",
-    "Safe travels, and godspeed in your journey.",
-    "I'll never forget what we had together.",
-    "Fine, I see how it is.",
-    "This is an **A** to **B** server, so you can **C** yourself out.",
-    "Leave my domain, peasant.",
-    "May ye find greener grass elsewhere.",
-    "Live long and prosper."
-  ],
-
-  "owo": {
-    "eye": "@oO0u^;.,x",
-    "mouth": "_-wW=~m3"
+  "bye": {
+    "settings": {
+      "regex": [
+        "(go{2,}d *)?bye+",
+        "\\A(bye){1,2}",
+        "bai+"
+      ]
+    },
+    "responses": [
+      "Begone, thot!",
+      "I'll miss ya, my dude.",
+      "***Don'T LeaVe ME lIkE FAtheR Did!!1!1!***",
+      "Smell ya later.",
+      "Safe travels, and godspeed in your journey.",
+      "I'll never forget what we had together.",
+      "Fine, I see how it is.",
+      "This is an **A** to **B** server, so you can **C** yourself out.",
+      "Leave my domain, peasant.",
+      "May ye find greener grass elsewhere.",
+      "Live long and prosper."
+    ]
   },
 
-  "triggered": [
-    "***R E E E E E E***",
-    "**Triggered.**",
-    "Calm your funbags.",
-    "***Calllllllmmmmmmm***, child.",
-    "You put the 'Re' in 'reasoning'.",
-    "git rekt nub"
-  ],
+  "owo": {
+    "settings": {
+      "regex": "\\A(?P<eye>[@oO0uU;.,xX^])[_wWm=~3-](?P=eye)\\Z",
+      "clean": "False"
+    },
+    "responses": "(?P<eye>[@oO0uU;.,xX^])[_wWm=~3-](?P=eye)"
+  },
 
-  "boop": [
-    "Boop!",
-    "Bop!",
-    "Beep!",
-    "Bap!",
-    "Bwoop!"
-  ],
+  "triggered": {
+    "settings": {
+      "regex": "\\btrigger"
+    },
+    "responses": [
+      "***R E E E E E E***",
+      "**Triggered.**",
+      "Calm your funbags.",
+      "***Calllllllmmmmmmm***, child.",
+      "You put the 'Re' in 'reasoning'.",
+      "git rekt nub"
+    ]
+  },
 
-  "oof": [
-    "`OOF!`",
-    "~~__***O O O O O O O O O O O O O O O F***__~~",
-    "OooOOOoooOoooOoooOoOof.",
-    "Ya done oofed yourself.",
-    "This is so sad. Arduino, play Despacito."
-  ],
+  "bop": {
+    "settings": {
+      "regex": "\\bbw?((li+)|[aeo]+)?p\\b"
+    },
+    "responses": [
+      "Boop!",
+      "Bop!",
+      "Beep!",
+      "Bap!",
+      "Bwoop!"
+    ]
+  },
 
-  "kachigga": [
-    "Kachow!",
-    "Kachigga! Kachow!",
-    "Kachigga!",
-    "The fuck did you just call me?"
-  ],
+  "oof": {
+    "settings": {
+      "regex": "\\bo{2,}f\\b"
+    },
+    "responses": [
+      "`OOF!`",
+      "~~__***O O O O O O O O O O O O O O O F***__~~",
+      "OooOOOoooOoooOoooOoOof.",
+      "Ya done oofed yourself.",
+      "This is so sad. Arduino, play Despacito."
+    ]
+  },
 
-  "no u": [
-    "No you.",
-    "Nay, thee.",
-    "Nigh, thyself.",
-    "No ***U***.",
-    "Your mother is straightn't.",
-    "Hey, Vsauce - Michael here! Your mother is straight.\n\n\n\n\n*Or is she?* `<Science music plays>`"
-  ],
+  "kachigga": {
+    "settings": {
+      "regex": "kachigga"
+    },
+    "responses": [
+      "Kachow!",
+      "Kachigga! Kachow!",
+      "Kachigga!",
+      "The fuck did you just call me?"
+    ]
+  },
 
-  "mentioned": [
-    "I heard my name?",
-    "You called?",
-    "I have been summoned.",
-    "Have you come to kill me?"
-  ],
+  "no u": {
+    "settings": {
+      "regex": "\\Ano (yo)*u\\Z"
+    },
+    "responses": [
+      "No you.",
+      "Nay, thee.",
+      "Nigh, thyself.",
+      "No ***U***.",
+      "Your mother is straightn't.",
+      "Hey, Vsauce - Michael here! Your mother is straight.\n\n\n\n\n*Or is she?* `<Science music plays>`"
+    ]
+  },
 
-  "crush": [
-    "*They said Connor-senpai's name!* :hearts:"
-  ]
+  "name": {
+    "settings": {
+      "regex": "\\A(\\w )*cueball\\Z"
+    },
+    "responses": [
+      "I heard my name?",
+      "You called?",
+      "I have been summoned.",
+      "That's me!"
+    ]
+  },
+
+  "crush": {
+    "settings": {
+      "regex": "connor",
+      "delete_after": 3
+    },
+    "responses": [
+      "*They said Connor-senpai's name!* :hearts:"
+    ]
+  }
 }

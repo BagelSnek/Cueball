@@ -4,48 +4,49 @@
       "responses": [
         "Hi, thot.",
         "Oh, you again."
-      ],
-      "morning": [
+      ]
+    },
+    "morning": {
+      "responses": [
         "Crap, she's awake."
-      ],
-      "night": [
+      ]
+    },
+    "night": {
+      "responses": [
         "Yeah, night."
       ]
     },
-    "bye": [
-      "Finally.",
-      "Good, she's leaving."
-    ]
+    "bye": {
+      "responses": [
+        "Finally.",
+        "Good, she's leaving."
+      ]
+    }
   },
-
   "222092844628705280": {
     "hello": {
       "responses": [
         "Hey there, handsome.",
         "Hi, Grant!"
-      ],
-      "morning": [
+      ]
+    },
+    "morning": {
+      "responses": [
         "Good morning, sunshine!",
         "Sleep well, sugar?"
-      ],
-      "night": [
+      ]
+    },
+    "night": {
+      "responses": [
         "Sleep well, babe! :heart:"
       ]
     },
-
-    "bye": [
-      "*I'll miss you!* ;-;"
-    ]
+    "bye": {
+      "responses": [
+        "*I'll miss you!* ;-;"
+      ]
+    }
   },
-
-  "477803878805667840": {
-    "ignored": ""
-  },
-
-  "506158894045855784": {
-    "ignored": ""
-  },
-
   "279092204771868672": {
     "hello": {
       "responses": [
@@ -56,31 +57,42 @@
       ]
     }
   },
-
   "392172434402443264": {
     "hello": {
       "responses": [
         "Greetings, farmerman.",
         "Oh look, a redneck!",
-        "Hey, guess you took a break from french kissing a V10.",
+        "Hey, guess you took a break from french kissing a V8.",
         "So ***this*** is the owner of the Instagram account I've heard so much about. Interesting.",
         "Is this guy a school shooter or something?"
       ]
     },
-
-    "bye": [
-      "***Go back to your cows, you atheist.***"
-    ]
-  },
-
-  "219581824224067584": {
-    "hello": {
+    "bye": {
       "responses": [
-        "Greetings, Noah."
+        "***Go back to your cows, you atheist.***"
+      ]
+    },
+    "fields": {
+      "settings": {
+        "regex": "how (are)|r the fields"
+      },
+      "responses": [
+        "Did you get rejected by the cattle, too?",
+        "Probably as barren as your sex life.",
+        "The slaves you probably own could tell you better.",
+        "Fields are fine, but the cotton gin is jammed."
       ]
     }
   },
-
+  "219581824224067584": {
+    "hello": {
+      "responses": [
+        "Greetings, Noah.",
+        "Sup, tard.",
+        "Where's the tard wrangler when you need them?"
+      ]
+    }
+  },
   "353314882965471242": {
     "hello": {
       "responses": [
@@ -89,10 +101,20 @@
         "Hey mom!"
       ]
     },
-
-    "bye": [
-      "Bye, mom!",
-      "I'll miss you lots."
-    ]
+    "bye": {
+      "responses": [
+        "Bye, mom!",
+        "I'll miss you lots."
+      ]
+    }
+  },
+  "477803878805667840": {
+    "ignored": ""
+  },
+  "506158894045855784": {
+    "ignored": ""
+  },
+  "247283454440374274": {
+    "ignored": ""
   }
 }

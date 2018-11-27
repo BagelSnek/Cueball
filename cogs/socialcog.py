@@ -34,21 +34,37 @@ class SocialCog:
                 embed.description = f"{ctx.message.author.mention} fucking beat {member.mention}!"
         await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["bigitize", "bigicate", "biginate", "enlarge"])
-    async def bigify(self, ctx, *message: str):
-        """Send a large, emoji constructed message of whatever sentence you want."""
-        await ctx.message.delete()
-        await ctx.send("".join([f":regional_indicator_{letter}:" if letter != " " else "   " for letter in
-                               [char for char in re.sub(r'([^a-z0-9\s])+', '', ' '.join(message).lower())]]))
-
-    @commands.command(aliases = ['say'])
-    async def echo(self, ctx, *say):
-        """Makes the bot talk."""
+    @commands.command(aliases = ['user', 'whois'])
+    async def info(self, ctx, user: discord.Member):
+        """Gets info on a member, such as their ID."""
+        embed = discord.Embed(title = "Command: info", color = 0x0000FF)
         try:
-            await ctx.message.delete()
-            await ctx.send(' '.join(say))
+            embed.description = user.name
+            embed.add_field(name = "ID", value = user.id)
+            embed.add_field(name = "Joined at", value = user.joined_at)
+            embed.add_field(name = "Roles", inline = False,
+                            value = "\n".join(filter(None, [role.name if role.name != "@everyone" else None
+                                                            for role in user.roles])))
         except:
-            await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
+            embed.color = 0xFF0000
+            embed.description = "How did you fuck up this command?"
+        await ctx.send(embed = embed)
+
+    @commands.command(name = "getBans", aliases = ["listBans", "bans"])
+    async def get_bans(self, ctx):
+        """Lists all banned users on the current guild."""
+        await ctx.send(embed = discord.Embed(title = "Command: getBans", color = 0x00FF00,
+                                             description =
+                                             '\n'.join([y.name for y in await ctx.get_bans(ctx.message.guild)])))
+
+    @commands.command(name = "listRoles", aliases = ["roles"])
+    async def list_roles(self, ctx):
+        """Lists the current roles on the guild."""
+        await ctx.send(embed = discord.Embed(title = "Command: listRoles", color = 0x0000FF,
+                                             description = "\n".join(filter(None, [f"`{role.name}`"
+                                                                                   if role.name != "@everyone" else None
+                                                                                   for role in
+                                                                                   ctx.message.guild.roles]))))
 
 
 def setup(bot):
