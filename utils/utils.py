@@ -52,6 +52,8 @@ def merge(a, b):
     """Merges b into a"""
     if isinstance(a, dict) and isinstance(b, dict):
         for key in b:
+            if key not in a:
+                a[key] = b[key]
             if isinstance(a[key], dict) and isinstance(b[key], dict):
                 merge(a[key], b[key])
             else:
