@@ -122,16 +122,14 @@ class ModCog:
     async def update_cue(self, ctx, reboot = "false"):
         try:
             repo = git.Repo()
-            repo.remotes.origin.pull(rebase = True)
+            repo.git.reset('--hard')
 
             await ctx.send("Update successful!")
 
             if reboot == "true":
-                await ctx.send("Rebooting!")
-                await self.bot.logout()
-        except:
-            await ctx.send("An error occurred whilst attempting to update.")
-
+                await self.reboot()
+        except Exception as e:
+            await ctx.send(f"{type(e)}: {e}")
 
 
 def setup(bot):
