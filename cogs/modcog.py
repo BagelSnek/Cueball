@@ -127,7 +127,8 @@ class ModCog:
             await ctx.send("Update successful!")
 
             if reboot == "true":
-                await self.reboot(ctx)
+                await ctx.send("Rebooting!")
+                await self.bot.logout()
         except:
             await ctx.send("An error occurred whilst attempting to update.")
 
