@@ -119,18 +119,19 @@ class ModCog:
 
     @checks.is_auth()
     @commands.command(name = 'update')
-    async def update_cue(self, ctx, reboot = "false"):
+    async def update_cue(self, ctx, relog = "false"):
         try:
             repo = git.Repo()
             repo.git.reset('--hard')
 
             await ctx.send("Update successful!")
-
-            if reboot == "true":
-                await ctx.send("Rebooting!")
-                await self.bot.logout()
         except Exception as e:
             await ctx.send(f"{type(e)}: {e}")
+            return
+
+        if relog == "true":
+            await ctx.send("Rebooting!")
+            await self.bot.logout()
 
 
 def setup(bot):
