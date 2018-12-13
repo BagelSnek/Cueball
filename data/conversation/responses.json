@@ -70,16 +70,16 @@
   "hello": {
     "settings": {
       "regex": [
-        "\\bha*i+\\b",
-        "hello+",
-        "\\byo+\\b",
-        "greetings",
-        "whats up",
-        "hey+([ao]+|( there))",
-        "howdy",
-        "w((hats)|(uz+)) poppin",
-        "salutations",
-        "wa[sz]{2,}up"
+        "\\Aha*i+ cue(ball)?\\Z",
+        "hello+ cue(ball)?",
+        "\\Ayo+ cue(ball)?\\Z",
+        "greetings cue(ball)?",
+        "whats up cue(ball)?",
+        "hey+([ao]+|( there)) cue(ball)?",
+        "howdy cue(ball)?",
+        "w((hats)|(uz+)) poppin cue(ball)?",
+        "salutations cue(ball)?",
+        "wa[sz]{2,}up cue(ball)?"
       ]
     },
     "responses": [

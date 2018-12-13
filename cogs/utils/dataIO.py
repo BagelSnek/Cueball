@@ -1,6 +1,6 @@
 import json
 import logging
-from os import replace
+import os
 from os.path import splitext, join
 from random import randint
 
@@ -44,7 +44,7 @@ class DataIO:
         self._jdump(tmp_file, data)
         try:
             self.load_json(tmp_file)
-            replace(tmp_file, file)
+            os.replace(tmp_file, file)
         except json.decoder.JSONDecodeError:
             self.logger.exception(f"Save to {file} aborted due to error. Data can be found in {tmp_file}.")
 

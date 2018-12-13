@@ -2,11 +2,11 @@ import datetime
 import os
 import platform
 import subprocess
-
 import discord
 from discord.ext import commands
 from cogs.utils.settings import settings
 from cogs.utils import checks
+import git
 
 
 class ModCog:
@@ -106,7 +106,7 @@ class ModCog:
 
     @commands.command(name = "uptime")
     async def uptime(self, ctx):
-        await ctx.send(self.bot.uptime - datetime.datetime.utcnow())
+        await ctx.send(datetime.datetime.utcnow() - self.bot.uptime)
 
     @checks.is_auth()
     @commands.command()
@@ -114,23 +114,23 @@ class ModCog:
         """
         Reboots script if the user is authorized.
         """
+        await ctx.send("Rebooting!")
         await self.bot.logout()
 
     @checks.is_auth()
     @commands.command(name = 'update')
     async def update_cue(self, ctx, reboot = "false"):
         try:
-            code = subprocess.check_output(["git", "pull"], cwd = os.getcwd())
-        except FileNotFoundError:
-            await ctx.send("Error: Git not found. It's either not installed or not in the PATH environment.")
-            return
+            repo = git.Repo()
+            repo.remotes.origin.pull(rebase = True)
 
-        if code == 0:
-            await ctx.send("Update successful.")
-            if reboot.lower() == "true":
-                await self.reboot()
-        else:
-            await ctx.send("Error while attempting to update.")
+            await ctx.send("Update successful!")
+
+            if reboot == "true":
+                await self.reboot(ctx)
+        except:
+            await ctx.send("An error occurred whilst attempting to update.")
+
 
 
 def setup(bot):
