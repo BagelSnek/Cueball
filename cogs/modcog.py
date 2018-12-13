@@ -127,7 +127,8 @@ class ModCog:
             await ctx.send("Update successful!")
 
             if reboot == "true":
-                await self.reboot()
+                await ctx.send("Rebooting!")
+                await self.bot.logout()
         except Exception as e:
             await ctx.send(f"{type(e)}: {e}")
 
