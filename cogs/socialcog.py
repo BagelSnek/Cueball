@@ -1,10 +1,12 @@
-import re
 import discord
 from discord.ext import commands
 
 
 class SocialCog:
-    """SocialCog is a cog that facilitates interaction between members, good or bad."""
+    """
+    SocialCog is a cog that facilitates interaction between members, good or bad.
+    -- Designed for use with Cueball --
+    """
     def __init__(self, bot):
         self.bot = bot
 
@@ -55,7 +57,7 @@ class SocialCog:
         """Lists all banned users on the current guild."""
         await ctx.send(embed = discord.Embed(title = "Command: getBans", color = 0x00FF00,
                                              description =
-                                             '\n'.join([y.name for y in await ctx.get_bans(ctx.message.guild)])))
+                                             '\n'.join([y.name for y in await ctx.get_bans(ctx.guild)])))
 
     @commands.command(name = "listRoles", aliases = ["roles"])
     async def list_roles(self, ctx):
@@ -64,7 +66,7 @@ class SocialCog:
                                              description = "\n".join(filter(None, [f"`{role.name}`"
                                                                                    if role.name != "@everyone" else None
                                                                                    for role in
-                                                                                   ctx.message.guild.roles]))))
+                                                                                   ctx.guild.roles]))))
 
 
 def setup(bot):

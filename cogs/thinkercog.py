@@ -1,16 +1,17 @@
-from discord.ext import commands
-import discord
-from datetime import date, timedelta
-import random
-from random import randrange
-import requests
-import nltk
-from bs4 import BeautifulSoup
 import re
+import requests
+from bs4 import BeautifulSoup
+from datetime import date, timedelta
+from random import randrange
+import discord
+from discord.ext import commands
 
 
 class ThinkerCog:
-    """ThinkerCog is a cog that thinks and finds stuff that makes you think."""
+    """
+    ThinkerCog is a cog that thinks and finds stuff that makes you think.
+    -- Designed for use with Cueball --
+    """
     def __init__(self, bot):
         self.bot = bot
 
@@ -44,22 +45,6 @@ class ThinkerCog:
             embed.description = "NASA was stupid on this day and decided to use a flash player trash. Try again, buddy."
             embed.color = 0xFF0000
 
-        await ctx.send(embed = embed)
-
-    @commands.command()
-    async def answer(self, ctx, *question: str):
-        """Answers a basic question."""
-        embed = discord.Embed(title = "Command: answer", color = 0x0000FF, description = " ".join(question))
-        questions = " ".join(question).strip('?').split(' or ')
-        if len(questions) == 1:
-            embed.set_footer(text =
-                             random.choice(["yes", "yas", "yep", "yup", "no", "nop", "nope", "noperino"]).capitalize())
-        else:
-            for chunk in questions:
-                for word, tag in nltk.pos_tag(nltk.tokenize.word_tokenize(chunk), tagset = 'universal'):
-                    if tag == 'PRON' or word == 'should':
-                        chunk.replace(word, '')
-            embed.set_footer(text = random.choice(questions).capitalize())
         await ctx.send(embed = embed)
 
     @commands.command(name = "xkcd")

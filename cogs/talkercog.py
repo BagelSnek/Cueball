@@ -1,26 +1,31 @@
+import nltk
 import random
-from copy import deepcopy
-from utils import utils
 from rstr import xeger
+from copy import deepcopy
+from cogs.utils.dataIO import dataIO
+from cogs.utils.text_formatter import txt_frmt
+from cogs.utils.settings import settings
+import discord
 from discord.ext import commands
-from re import sub
 
 
 class TalkerCog:
-    """TalkerCog is a cog that talks back. Sass included, batteries not included."""
+    """
+    TalkerCog is a cog that talks back. Sass included, batteries not included.
+    -- Designed for use with Cueball --
+    """
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-        self.responses = utils.load_json('cogs/talkercog/responses.json')
-        self.personalized = utils.load_json('cogs/talkercog/personalized.json')
+        self.responses = dataIO.load_json('conversation/responses.json')
+        self.personalized = dataIO.load_json('conversation/personalized.json')
 
     @staticmethod
     def check_response(message, responses):
         """Loops through the responses dict and returns the first valid response."""
         for resp in responses.values():
-            if utils.reg_searcher(message.content, resp['settings']['regex'],
-                                  clean = bool('clean' not in resp['settings'])):
+            if txt_frmt.regscan(message.content, resp['settings']['regex'], clean_str = bool('clean' not in resp['settings'])):
 
                 # Setting the delete_after if it is in the dict
                 del_aft = resp['settings']['delete_after'] if 'delete_after' in resp['settings'] else None
@@ -37,7 +42,8 @@ class TalkerCog:
         return None
 
     async def on_message(self, message):
-        if self.bot.command_prefix in message.content or message.author == self.bot.user:
+        if any(prefix in message.content for prefix in settings.get_prefixes(message.guild)) \
+                or message.author == self.bot.user:
             return
 
         responses = deepcopy(self.responses)
@@ -48,7 +54,7 @@ class TalkerCog:
             if "ignored" in self.personalized[str(message.author.id)]:
                 return
 
-            utils.merge(responses, personalized[str(message.author.id)])
+            dataIO.merge(responses, personalized[str(message.author.id)])
 
         response = self.check_response(message, responses)
 
@@ -60,7 +66,7 @@ class TalkerCog:
         """Send a large, emoji constructed message of whatever sentence you want."""
         await ctx.message.delete()
         await ctx.send("".join([f":regional_indicator_{letter}:" if letter != " " else "   " for letter in
-                               [char for char in sub(r'([^a-z0-9\s])+', '', ' '.join(message).lower())]]))
+                               [char for char in txt_frmt.clean(' '.join(message))]]))
 
     @commands.command(aliases = ['say'])
     async def echo(self, ctx, *say):
@@ -70,6 +76,22 @@ class TalkerCog:
             await ctx.send(' '.join(say))
         except:
             await ctx.send("If you managed to break this command, you are a fucking wizard or a hacker.")
+
+    @commands.command()
+    async def answer(self, ctx, *question: str):
+        """Answers a basic question."""
+        embed = discord.Embed(title = "Command: answer", color = 0x0000FF, description = " ".join(question))
+        questions = txt_frmt.clean(" ".join(question)).split(' or ')
+        if len(questions) == 1:
+            embed.set_footer(text =
+                             random.choice(["yes", "yas", "yep", "yup", "no", "nop", "nope", "noperino"]).capitalize())
+        else:
+            for chunk in questions:
+                for word, tag in nltk.pos_tag(nltk.tokenize.word_tokenize(chunk), tagset = 'universal'):
+                    if tag == 'PRON' or word == 'should':
+                        chunk.replace(word, '')
+            embed.set_footer(text = random.choice(questions).capitalize())
+        await ctx.send(embed = embed)
 
 
 def setup(bot):

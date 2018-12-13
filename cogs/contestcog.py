@@ -1,36 +1,31 @@
-import os
 import random
-import discord
 import datetime
-import json
 from functools import reduce
 import aiocron
 import asyncio
 from discord.ext import commands
+from cogs.utils.dataIO import dataIO
+from cogs.utils.text_formatter import txt_frmt
 
 
-class ContestCog(discord.Client):
-    """ContestCog is a cog that manages a weekly contest in any channel named 'weekly-contest'."""
+class ContestCog:
+    """
+    ContestCog is a cog that manages a weekly contest in any channel named 'weekly-contest'.
+    -- Designed for use with Cueball --
+    """
 
-    def __init__(self, bot, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, bot):
         self.bot = bot
-        self.bg_task = self.loop.create_task(self.contest())
+        self.bg_task = self.bot.loop.create_task(self.contest())
         self._update_cron = aiocron.crontab('1 0 * * *', func = self.contest, start = True)
-        # For suspending contest protocall while contest is inactive.
         self.is_active_contest = False
 
-        if not os.path.isfile('cogs/contestcog/contesthistory.json'):
-            print("Making contesthistory.json.")
-            json.dump({"contests": []}, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
-        else:
-            with open('cogs/contestcog/contesthistory.json', 'r') as contest_history:
-                self.contest_history = json.load(contest_history)
-            contest_history.close()
+        # Make update command to check values in contesthistory.json later.
+        self.contest_history = dataIO.load_json('contests/contesthistory.json')
+        self.contests = dataIO.load_json('contests/contests.json')
 
-        with open('cogs/contestcog/contests.json', 'r') as contests:
-            self.contests = json.load(contests)
-        contests.close()
+        if not self.contest_history:
+            self.contest_history = {"contests": []}
 
     # Alloy only one vote, remove new vote if one is already present.
     async def on_raw_reaction_add(self, payload):
@@ -43,9 +38,9 @@ class ContestCog(discord.Client):
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, user)
 
-        user_list = list(filter(None, [await react.users().flatten()
+        user_list = txt_frmt.deblank([await react.users().flatten()
                    if react.emoji == self.bot.get_emoji(509383247772385311) else None for react in reduce(lambda x, y: x + y,
-                   [message.reactions for message in await channel.history().flatten()])]))
+                   [message.reactions for message in await channel.history().flatten()])])
 
         # Delete reaction if the user has voted in that channel before or is a bot other than Cueball.
         if len(user_list) != 0:
@@ -56,7 +51,7 @@ class ContestCog(discord.Client):
 
     # Allow only one submition for competion and delete submition is one is present.
     async def on_message(self, message):
-        if message.channel.name != "weekly-contest" or message.author == self.bot.user:
+        if txt_frmt.clean(message.channel.name) != "weeklycontest" or message.author == self.bot.user:
             return
 
         # Delete message if the author already sent one in this channel or is a bot other than Cueball. Else, add vote.
@@ -82,7 +77,7 @@ class ContestCog(discord.Client):
         contest = {"date": datetime.date.today().strftime('%y/%m/%d'),
                    "challenge": random.choice(challenges)}
         self.contest_history['contests'].append(contest)
-        json.dump(self.contest_history, open('cogs/contestcog/contesthistory.json', 'w'), indent = 2)
+        dataIO.load_json('contests/contesthistory.json', self.contest_history)
 
         for channel in channels:
             print(f"\t\tAttempting to start contest in {channel.guild.name}...")
@@ -110,14 +105,15 @@ class ContestCog(discord.Client):
 
         for channel in channels:
             print(f"\t\tAttempting to end contest in {channel.guild.name}...")
+            channel_hist = await channel.history(limit = None).flatten()
             try:
                 tally = {}
-                for message in await channel.history().flatten():
-                    if not await channel.history().flatten():
+                for message in channel_hist:
+                    if not channel_hist:
                         pass
                     elif not message.author.bot:
-                        tally[str(message.author.id)] = list(filter(None, [react.count if react.emoji.id == 509383247772385311
-                                                         else None for react in message.reactions]))[0]
+                        tally[str(message.author.id)] = txt_frmt.deblank([react.count if react.emoji.id == 509383247772385311
+                                                                 else None for react in message.reactions])[0]
 
                 # Tally up winners if there are any.
                 winners = [self.bot.get_user(int(key)) for key in tally if tally[key] == max(tally.values())] if tally else []
@@ -130,13 +126,13 @@ class ContestCog(discord.Client):
                 else:
                     response = f"{winners[0].mention} won!"
 
-                # Add code to send the submition for each winner in response.
-                if len(winners) != 0 and len(await channel.history().flatten()) != 0:
-                    for message in await channel.history().flatten():
+                if winners and channel_hist:
+                    for message in channel_hist:
                         if message.author in winners:
-                            response += f"\n\n**{message.author.name}**\n```{message.content}```"
+                            content = f"```{message.content}```" if not message.attachments else message.attachments[0]
+                            response += f"\n\n**{message.author.name}**\n{content}"
 
-                await channel.delete_messages(await channel.history(limit = None).flatten())
+                await channel.delete_messages(channel_hist)
                 await channel.send(response)
             except commands.MissingPermissions as exc:
                 print(f"\t\tError when trying to end contest in {channel.guild.name}.\n"
@@ -153,14 +149,15 @@ class ContestCog(discord.Client):
         print("Checking contest...")
 
         # Assembles channel list for contests.
-        channels = list(filter(None, [channel if "weekly-contest" in channel.name
-                                      else None for channel in self.bot.get_all_channels()]))
-        previous_contest = self.contest_history['contests'][-1]['date']
+        channels = txt_frmt.deblank([channel if txt_frmt.clean(channel.name) == "weeklycontest"
+                            else None for channel in self.bot.get_all_channels()])
+        previous_contest = self.contest_history['contests'][-1]['date'] if self.contest_history['contests'] else None
 
         # Friday's code.
         if datetime.datetime.today().weekday() == 4 and not self.is_active_contest and \
                 previous_contest != datetime.datetime.today().strftime('%y/%m/%d'):
             await self.start_contest(channels)
+
         # Sunday's code.
         elif datetime.datetime.today().weekday() == 6 and self.is_active_contest and \
                 previous_contest == (datetime.datetime.today() - datetime.timedelta(days = 2)).strftime('%y/%m/%d'):

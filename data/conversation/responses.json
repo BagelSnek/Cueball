@@ -1,7 +1,7 @@
 {
   "single": {
     "settings": {
-      "regex": "\\A(are)|r (yo)*u single\\Z"
+      "regex": "\\A((are)|r) (yo)*u single\\Z"
     },
     "responses": [
       "It's a possibility.",
@@ -77,7 +77,7 @@
         "whats up",
         "hey+([ao]+|( there))",
         "howdy",
-        "whats poppin",
+        "w((hats)|(uz+)) poppin",
         "salutations",
         "wa[sz]{2,}up"
       ]
@@ -130,7 +130,7 @@
       "regex": [
         "(go{2,}d *)?bye+",
         "\\A(bye){1,2}",
-        "bai+"
+        "\\Abai+\\Z"
       ]
     },
     "responses": [
