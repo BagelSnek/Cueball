@@ -77,7 +77,7 @@ class ContestCog:
         contest = {"date": datetime.date.today().strftime('%y/%m/%d'),
                    "challenge": random.choice(challenges)}
         self.contest_history['contests'].append(contest)
-        dataIO.load_json('contests/contesthistory.json', self.contest_history)
+        dataIO.dump_json('contests/contesthistory.json', self.contest_history)
 
         for channel in channels:
             print(f"\t\tAttempting to start contest in {channel.guild.name}...")
@@ -87,7 +87,7 @@ class ContestCog:
                     await channel.delete_messages(chanhist)
                 await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
                                    f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
-                                   f"votes before Sunday wins!\n"
+                                   "votes before Sunday wins!\n"
                                    "Post only once, I don't wanna have to delete messages. Same goes for votes.\n"
                                    "Don't vote for yourself, by the way.")
                 print(f"\t\tContest successfully started in {channel.guild.name}.")

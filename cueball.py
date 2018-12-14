@@ -1,8 +1,8 @@
-import datetime
 import os
-import platform
 import sys
+import platform
 import time
+import datetime
 import discord
 from discord.ext import commands
 import logging

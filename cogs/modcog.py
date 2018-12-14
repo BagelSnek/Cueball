@@ -1,12 +1,10 @@
 import datetime
-import os
 import platform
 import subprocess
 import discord
 from discord.ext import commands
 from cogs.utils.settings import settings
 from cogs.utils import checks
-import git
 
 
 class ModCog:
@@ -121,9 +119,7 @@ class ModCog:
     @commands.command(name = 'update')
     async def update_cue(self, ctx, relog = "false"):
         try:
-            repo = git.Repo()
-            repo.git.reset('--hard')
-
+            subprocess.call(("git", "pull", "--ff-only"))
             await ctx.send("Update successful!")
         except Exception as e:
             await ctx.send(f"{type(e)}: {e}")
