@@ -85,6 +85,7 @@ class ContestCog:
                 chanhist = await channel.history(limit = None, reverse = True).flatten()
                 if chanhist:
                     await channel.delete_messages(chanhist)
+                print(f"\t\tSending contest message...")
                 await channel.send(f"**Entertain me, mortals.** {contest['challenge']} you can in this channel!\n"
                                    f"Vote on your favorite with {self.bot.get_emoji(509383247772385311)}. The most "
                                    "votes before Sunday wins!\n"
