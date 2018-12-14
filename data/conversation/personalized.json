@@ -26,24 +26,19 @@
   "222092844628705280": {
     "hello": {
       "responses": [
-        "Hey there, handsome.",
+        "Hey there, botu.",
         "Hi, Grant!"
       ]
     },
     "morning": {
       "responses": [
-        "Good morning, sunshine!",
-        "Sleep well, sugar?"
+        "Good morning, boyo!",
+        "Sleep well, my man?"
       ]
     },
     "night": {
       "responses": [
-        "Sleep well, babe! :heart:"
-      ]
-    },
-    "bye": {
-      "responses": [
-        "*I'll miss you!* ;-;"
+        "Sleep well, duderino!:"
       ]
     }
   },

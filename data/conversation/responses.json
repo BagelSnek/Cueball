@@ -10,8 +10,6 @@
       "Depends on the day.",
       "Depends. What day is it?",
       "I'm not, but I heard Xaereus is.",
-      "I'm not, but I heard Cryst4l is.",
-      "I'm not, but I heard *Connor is...*",
       "Depends on if it fits...",
       "Do I ***look*** single to you?",
       "Never ask me that again.",
@@ -72,7 +70,7 @@
       "regex": [
         "\\Aha*i+ cue(ball)?\\Z",
         "hello+ cue(ball)?",
-        "\\Ayo+ cue(ball)?\\Z",
+        "\\Ayo+ cue(ball)*\\Z",
         "greetings cue(ball)?",
         "whats up cue(ball)?",
         "hey+([ao]+|( there)) cue(ball)?",
@@ -231,16 +229,6 @@
       "You called?",
       "I have been summoned.",
       "That's me!"
-    ]
-  },
-
-  "crush": {
-    "settings": {
-      "regex": "connor",
-      "delete_after": 3
-    },
-    "responses": [
-      "*They said Connor-senpai's name!* :hearts:"
     ]
   }
 }
