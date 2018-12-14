@@ -33,7 +33,7 @@ class ContestCog:
         if channel.name != "weekly-contest" or self.bot.get_user(payload.user_id) == self.bot.user:
             return
 
-        if (payload.emoji.id != 509383247772385311 and self.is_active_contest) or user.bot:
+        if payload.emoji.id != 509383247772385311 or user.bot:
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, user)
 
@@ -54,7 +54,7 @@ class ContestCog:
             return
 
         # Delete message if the author already sent one in this channel or is a bot other than Cueball. Else, add vote.
-        if [msg.author.id for msg in await message.channel.history().flatten()].count(message.author.id) > 1 \
+        if [msg.author.id for msg in await message.channel.history().flatten()].count(message.author.id) > 2 \
                 or message.author.bot:
             await message.delete()
         else:
