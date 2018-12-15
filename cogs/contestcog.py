@@ -18,7 +18,6 @@ class ContestCog:
         self.bot = bot
         self.bg_task = self.bot.loop.create_task(self.contest())
         self._update_cron = aiocron.crontab('1 0 * * *', func = self.contest, start = True)
-        self.is_active_contest = False
 
         # Make update command to check values in contesthistory.json later.
         self.contest_history = dataIO.load_json('contests/contesthistory.json')
@@ -34,7 +33,7 @@ class ContestCog:
         if channel.name != "weekly-contest" or self.bot.get_user(payload.user_id) == self.bot.user:
             return
 
-        if (payload.emoji.id != 509383247772385311 and self.is_active_contest) or user.bot:
+        if payload.emoji.id != 509383247772385311 or user.bot:
             message = await channel.get_message(payload.message_id)
             await message.remove_reaction(payload.emoji, user)
 
@@ -56,7 +55,7 @@ class ContestCog:
 
         # Delete message if the author already sent one in this channel or is a bot other than Cueball. Else, add vote.
         if [msg.author.id for msg in await message.channel.history().flatten()].count(message.author.id) > 1 \
-                or message.author.bot or not self.is_active_contest:
+                or message.author.bot:
             await message.delete()
         else:
             await message.add_reaction(self.bot.get_emoji(509383247772385311))
@@ -95,7 +94,6 @@ class ContestCog:
                 print(f"\t\tError when trying to start contest in {channel.guild.name}.\n"
                       f"\t\t{type(exc).__name__} : {exc}")
 
-        self.is_active_contest = True
         print("\tNew contest started.")
 
     async def end_contest(self, channels):
@@ -138,7 +136,6 @@ class ContestCog:
                 print(f"\t\tError when trying to end contest in {channel.guild.name}.\n"
                       f"\t\t{type(exc).__name__} : {exc}")
 
-        self.is_active_contest = False
         print("\tPrevious contest ended.")
 
     async def contest(self):
@@ -154,12 +151,12 @@ class ContestCog:
         previous_contest = self.contest_history['contests'][-1]['date'] if self.contest_history['contests'] else None
 
         # Friday's code.
-        if datetime.datetime.today().weekday() == 4 and not self.is_active_contest and \
+        if datetime.datetime.today().weekday() == 4 and \
                 previous_contest != datetime.datetime.today().strftime('%y/%m/%d'):
             await self.start_contest(channels)
 
         # Sunday's code.
-        elif datetime.datetime.today().weekday() == 6 and self.is_active_contest and \
+        elif datetime.datetime.today().weekday() == 6 and \
                 previous_contest == (datetime.datetime.today() - datetime.timedelta(days = 2)).strftime('%y/%m/%d'):
             await self.end_contest(channels)
 
