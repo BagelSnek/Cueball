@@ -5,6 +5,7 @@ from copy import deepcopy
 from cogs.utils.dataIO import dataIO
 from cogs.utils.text_formatter import txt_frmt
 from cogs.utils.settings import settings
+from cogs.utils import checks
 import discord
 from discord.ext import commands
 
@@ -68,6 +69,7 @@ class TalkerCog:
         await ctx.send("".join([f":regional_indicator_{letter}:" if letter != " " else "   " for letter in
                                [char for char in txt_frmt.clean(' '.join(message))]]))
 
+    @checks.is_auth()
     @commands.command(aliases = ['say'])
     async def echo(self, ctx, *say):
         """Makes the bot talk."""
